@@ -1,4 +1,4 @@
-package com.davidvignon.todoc.data;
+package com.davidvignon.todoc.data.task;
 
 import androidx.annotation.NonNull;
 

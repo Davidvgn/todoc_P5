@@ -6,8 +6,8 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
-import com.davidvignon.todoc.data.Task;
-import com.davidvignon.todoc.data.TaskRepository;
+import com.davidvignon.todoc.data.task.Task;
+import com.davidvignon.todoc.data.task.TaskRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +52,7 @@ public class TasksListViewModel extends ViewModel {
                 )
             );
         }
+        mediatorLiveData.setValue(tasksViewStateItems);
     }
 
 

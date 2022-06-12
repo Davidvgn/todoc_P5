@@ -1,17 +1,25 @@
-package com.davidvignon.todoc.data;
+package com.davidvignon.todoc.data.project;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+
+@Entity
 public class Project {
 
+    @PrimaryKey
     private final long id;
 
     @NonNull
+    @ColumnInfo
     private final String name;
 
     @ColorInt
+    @ColumnInfo
     private final int color;
 
     private Project(long id, @NonNull String name, @ColorInt int color) {
@@ -29,14 +37,14 @@ public class Project {
         };
     }
 
-    @Nullable
-    public static Project getProjectById(long id) {
-        for (Project project : getAllProjects()) {
-            if (project.id == id)
-                return project;
-        }
-        return null;
-    }
+//    @Nullable
+//    public static Project getProjectById(long id) {
+//        for (Project project : getAllProjects()) {
+//            if (project.id == id)
+//                return project;
+//        }
+//        return null;
+//    }
 
     public long getId() {
         return id;
@@ -53,13 +61,10 @@ public class Project {
         return color;
     }
 
+
     @Override
     @NonNull
     public String toString() {
-        return "Projet{" +
-            "id=" + id +
-            ", name=" + name +
-            ", color='" + color + '\'' +
-            '}';
+        return getName();
     }
 }

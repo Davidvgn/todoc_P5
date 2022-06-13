@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Switch;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.davidvignon.todoc.R;
 import com.davidvignon.todoc.ViewModelFactory;
 import com.davidvignon.todoc.data.SortingType;
+import com.davidvignon.todoc.data.project.Project;
 import com.davidvignon.todoc.databinding.TasksFragmentBinding;
 
 import org.jetbrains.annotations.NotNull;
@@ -57,7 +59,6 @@ public class TasksListFragment extends Fragment {
         viewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(TasksListViewModel.class);
         TasksListAdapter adapter = new TasksListAdapter(taskId -> viewModel.onDeleteViewModelClicked(taskId));
         binding.taskRv.setAdapter(adapter);
-
 
         viewModel.getTasksViewStateItemsLiveData().observe(getViewLifecycleOwner(), new Observer<List<TasksViewStateItem>>() {
             @Override

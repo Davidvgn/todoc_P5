@@ -1,6 +1,10 @@
 package com.davidvignon.todoc.ui.tasks;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.davidvignon.todoc.data.project.Project;
+import com.davidvignon.todoc.data.project.ProjectRepository;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -26,8 +30,12 @@ public class TasksViewStateItem {
         return id;
     }
 
-    public long getProjectId() {
-        return projectId;
+//    public long getProjectId() {
+//        return projectId;
+//    }
+
+    public Project getProject(){
+        return ProjectRepository.getProjectById(projectId);
     }
 
     @NonNull
@@ -49,7 +57,6 @@ public class TasksViewStateItem {
             name.equals(task.name) &&
             creationTimestamp == task.creationTimestamp;
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(id, projectId, name, creationTimestamp);

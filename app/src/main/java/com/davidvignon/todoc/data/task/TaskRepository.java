@@ -20,9 +20,6 @@ public class TaskRepository {
 
     private long maxId = 0;
 
-    @NonNull
-    ProjectDao projectDao;
-
     public TaskRepository() {
         if (BuildConfig.DEBUG) {
             generateRandomTasks();
@@ -73,6 +70,8 @@ public class TaskRepository {
 
     private void generateRandomTasks() {
         addTask(1, "Test task 1", LocalDateTime.now());
+        addTask(2, "Test task 2", LocalDateTime.now());
+        addTask(3, "Test task 3", LocalDateTime.now());
 
     }
 }

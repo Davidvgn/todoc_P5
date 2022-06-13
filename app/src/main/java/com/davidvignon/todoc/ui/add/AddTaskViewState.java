@@ -2,6 +2,9 @@ package com.davidvignon.todoc.ui.add;
 
 import androidx.annotation.Nullable;
 
+import com.davidvignon.todoc.data.project.Project;
+import com.davidvignon.todoc.data.project.ProjectRepository;
+
 public class AddTaskViewState {
 
     @Nullable
@@ -22,4 +25,5 @@ public class AddTaskViewState {
     public long getProject() {
         return project;
     }
+
 }

@@ -1,5 +1,7 @@
 package com.davidvignon.todoc.ui.tasks;
 
+import android.annotation.SuppressLint;
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,16 +9,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.davidvignon.todoc.R;
+import com.davidvignon.todoc.data.project.Project;
+import com.davidvignon.todoc.data.project.ProjectRepository;
+import com.davidvignon.todoc.data.task.TaskRepository;
 import com.davidvignon.todoc.ui.OnTaskClickedListener;
 
 public class TasksListAdapter extends ListAdapter<TasksViewStateItem, TasksListAdapter.ViewHolder> {
 
     private final OnTaskClickedListener listener;
+
 
     public TasksListAdapter(OnTaskClickedListener listener) {
         super(new ViewHolder.ListTaskItemCallBack());
@@ -38,7 +45,9 @@ public class TasksListAdapter extends ListAdapter<TasksViewStateItem, TasksListA
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private final ImageView projectColor;
+        private ProjectRepository projectRepository;
+
+        private final AppCompatImageView projectColor;
         private final ImageView deleteImage;
         private final TextView taskDescription;
         private final TextView projectName;
@@ -52,16 +61,22 @@ public class TasksListAdapter extends ListAdapter<TasksViewStateItem, TasksListA
             projectName = itemView.findViewById(R.id.task_item_tv_project_name);
         }
 
+        @SuppressLint("RestrictedApi")
         public void bind(TasksViewStateItem item, OnTaskClickedListener listener) {
-//            projectColor.setImage
+
+            final Project taskProject = item.getProject();
+
+            projectColor.setSupportImageTintList(ColorStateList.valueOf(taskProject.getColor()));
+            taskDescription.setText(item.getName());
+            projectName.setText(taskProject.getName());
             deleteImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     listener.onDeleteTaskClicked(item.getId());
                 }
             });
-            taskDescription.setText(item.getName());
-            projectName.setInputType((int) item.getProjectId());//todo david à vérifier
+
+
         }
 
         private static class ListTaskItemCallBack extends DiffUtil.ItemCallback<TasksViewStateItem>{

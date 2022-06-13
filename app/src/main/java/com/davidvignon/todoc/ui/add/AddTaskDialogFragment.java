@@ -14,16 +14,14 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.davidvignon.todoc.R;
 import com.davidvignon.todoc.ViewModelFactory;
 import com.davidvignon.todoc.data.project.Project;
-import com.davidvignon.todoc.data.project.ProjectRepository;
 
 public class AddTaskDialogFragment extends DialogFragment {
-
-    Project [] allProjects = ProjectRepository.getAllProjects();
 
     public static DialogFragment newInstance() {
         AddTaskDialogFragment addTaskDialogFragment = new AddTaskDialogFragment();
@@ -51,10 +49,6 @@ public class AddTaskDialogFragment extends DialogFragment {
         Spinner dialogSpinner = view.findViewById(R.id.dialog_project_spinner);
         Button addTaskButton = view.findViewById(R.id.dialog_button);
 
-        ArrayAdapter<Project> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, allProjects);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dialogSpinner.setAdapter(adapter);
-
         addTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,11 +59,16 @@ public class AddTaskDialogFragment extends DialogFragment {
             }
         });
 
-//        viewModel.getAddTaskViewStateLiveData().observe(this, new Observer<AddTaskViewState>() {
-//            @Override
-//            public void onChanged(AddTaskViewState addTaskViewState) {
-//            }
-//        });
+        viewModel.getAddTaskViewStateLiveData().observe(this, new Observer<AddTaskViewState>() {
+            @Override
+            public void onChanged(AddTaskViewState addTaskViewState) {
+                ArrayAdapter<Project> adapter = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_spinner_item, addTaskViewState.getProjects());
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                dialogSpinner.setAdapter(adapter);
+
+                dialogEditText.setError(addTaskViewState.getNameError());
+            }
+        });
 
         return view;
     }

@@ -40,7 +40,7 @@
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <!--Todo david placer dans le fragment
+    <!--Todo Nino placer dans le fragment. Je n'ai pas trouvé comment faire avec le recyclerView
       <TextView
           android:id="@+id/lbl_no_task"
           android:layout_width="wrap_content"

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,18 +14,12 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.davidvignon.todoc.R;
 import com.davidvignon.todoc.ViewModelFactory;
-import com.davidvignon.todoc.data.dao.ProjectDao;
 import com.davidvignon.todoc.data.project.Project;
 import com.davidvignon.todoc.data.project.ProjectRepository;
-import com.davidvignon.todoc.data.task.TaskRepository;
-
-import java.util.List;
 
 public class AddTaskDialogFragment extends DialogFragment {
 
@@ -61,25 +54,22 @@ public class AddTaskDialogFragment extends DialogFragment {
         ArrayAdapter<Project> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, allProjects);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dialogSpinner.setAdapter(adapter);
-        dialogSpinner.getSelectedItem();
 
         addTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewModel.onAddButtonClicked(
-                    dialogSpinner.getSelectedItemId(),
-                    dialogEditText.getText().toString()
+                    dialogSpinner.getSelectedItemId() + 1,
+                    dialogEditText.getText().toString() //todo Nino Comment faire un setError() en MVVM ?
                     );
             }
         });
 
-        viewModel.getAddTaskViewStateLiveData().observe(this, new Observer<AddTaskViewState>() {
-            @Override
-            public void onChanged(AddTaskViewState addTaskViewState) {
-                dialogEditText.setText(addTaskViewState.getName());
-            }
-        });
-
+//        viewModel.getAddTaskViewStateLiveData().observe(this, new Observer<AddTaskViewState>() {
+//            @Override
+//            public void onChanged(AddTaskViewState addTaskViewState) {
+//            }
+//        });
 
         return view;
     }

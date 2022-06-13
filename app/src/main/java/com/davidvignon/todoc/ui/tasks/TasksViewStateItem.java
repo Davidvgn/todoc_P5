@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 
 import com.davidvignon.todoc.data.project.Project;
 import com.davidvignon.todoc.data.project.ProjectRepository;
+import com.davidvignon.todoc.data.task.Task;
+import com.davidvignon.todoc.data.task.TaskRepository;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -29,10 +31,6 @@ public class TasksViewStateItem {
     public long getId() {
         return id;
     }
-
-//    public long getProjectId() {
-//        return projectId;
-//    }
 
     public Project getProject(){
         return ProjectRepository.getProjectById(projectId);

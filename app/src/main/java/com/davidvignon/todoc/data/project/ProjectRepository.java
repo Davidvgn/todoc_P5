@@ -22,8 +22,4 @@ public class ProjectRepository {
         }
         return null;
     }
-
-//    public Project getProject() {
-//        return getProjectById(Project.getId());
-//    }
 }

@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.davidvignon.todoc.R;
 import com.davidvignon.todoc.data.project.Project;
 import com.davidvignon.todoc.data.project.ProjectRepository;
-import com.davidvignon.todoc.data.task.TaskRepository;
 import com.davidvignon.todoc.ui.OnTaskClickedListener;
 
 public class TasksListAdapter extends ListAdapter<TasksViewStateItem, TasksListAdapter.ViewHolder> {
@@ -67,8 +66,8 @@ public class TasksListAdapter extends ListAdapter<TasksViewStateItem, TasksListA
             final Project taskProject = item.getProject();
 
             projectColor.setSupportImageTintList(ColorStateList.valueOf(taskProject.getColor()));
-            taskDescription.setText(item.getName());
             projectName.setText(taskProject.getName());
+            taskDescription.setText(item.getName());
             deleteImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -79,7 +78,7 @@ public class TasksListAdapter extends ListAdapter<TasksViewStateItem, TasksListA
 
         }
 
-        private static class ListTaskItemCallBack extends DiffUtil.ItemCallback<TasksViewStateItem>{
+        private static class ListTaskItemCallBack extends DiffUtil.ItemCallback<TasksViewStateItem> {
             @Override
             public boolean areItemsTheSame(@NonNull TasksViewStateItem oldItem, @NonNull TasksViewStateItem newItem) {
                 return oldItem.getId() == newItem.getId();

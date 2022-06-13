@@ -1,6 +1,7 @@
 package com.davidvignon.todoc.data.task;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -63,15 +64,16 @@ public class TaskRepository {
         tasksLiveData.setValue(tasks);
     }
 
+
     @NonNull
     public LiveData<List<Task>> getTasksLiveData() {
         return tasksLiveData;
     }
 
     private void generateRandomTasks() {
-        addTask(1, "Test task 1", LocalDateTime.now());
-        addTask(2, "Test task 2", LocalDateTime.now());
-        addTask(3, "Test task 3", LocalDateTime.now());
+        addTask(1, "Faire", LocalDateTime.now());
+        addTask(2, "Acheter", LocalDateTime.now());
+        addTask(3, "Build", LocalDateTime.now());
 
     }
 }

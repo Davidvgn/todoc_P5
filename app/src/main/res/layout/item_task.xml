@@ -23,7 +23,7 @@
             android:src="@drawable/bkg_oval"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:tint="@sample/tasks.json/data/backgroundTint" /><!--Todo Nino : dossier sampleData ?-->
+            tools:tint="@sample/tasks.json/data/backgroundTint" />
 
         <TextView
             android:id="@+id/task_item_tv_description"

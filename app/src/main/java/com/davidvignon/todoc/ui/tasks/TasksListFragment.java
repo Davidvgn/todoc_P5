@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -81,12 +82,17 @@ public class TasksListFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.filter_alphabetical:
                 sortingType = SortingType.ALPHABETICAL;
+                viewModel.sortList(sortingType);
+                return true;
             case R.id.filter_alphabetical_inverted:
-                sortingType = SortingType.ALPHABETICAL_INVERTED;
+                viewModel.sortList(SortingType.ALPHABETICAL_INVERTED);
+                return true;
             case R.id.filter_oldest_first:
-                sortingType = SortingType.OLD_FIRST;
+                viewModel.sortList(SortingType.OLD_FIRST);
+                return true;
             case R.id.filter_recent_first:
-                sortingType = SortingType.RECENT_FIRST;
+                viewModel.sortList(SortingType.RECENT_FIRST);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

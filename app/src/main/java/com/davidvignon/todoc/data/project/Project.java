@@ -14,11 +14,9 @@ public class Project {
     public final long id;
 
     @NonNull
-    @ColumnInfo
     private final String name;
 
     @ColorInt
-    @ColumnInfo
     private final int color;
 
     public Project(long id, @NonNull String name, @ColorInt int color) {

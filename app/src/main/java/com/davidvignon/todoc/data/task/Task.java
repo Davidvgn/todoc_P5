@@ -1,10 +1,12 @@
 package com.davidvignon.todoc.data.task;
 
 import androidx.annotation.NonNull;
+import androidx.room.Entity;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Entity
 public class Task {
 
     private final long id;

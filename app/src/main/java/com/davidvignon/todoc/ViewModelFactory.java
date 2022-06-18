@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.davidvignon.todoc.data.TaskRepository;
+import com.davidvignon.todoc.data.task.TaskRepository;
 import com.davidvignon.todoc.ui.add.AddTaskViewModel;
 import com.davidvignon.todoc.ui.tasks.TasksListViewModel;
 

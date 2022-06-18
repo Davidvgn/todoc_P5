@@ -1,12 +1,15 @@
-package com.davidvignon.todoc.data;
+package com.davidvignon.todoc.data.task;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.davidvignon.todoc.BuildConfig;
+import com.davidvignon.todoc.data.dao.ProjectDao;
+import com.davidvignon.todoc.data.project.Project;
+import com.davidvignon.todoc.data.task.Task;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,15 +29,15 @@ public class TaskRepository {
 
     public void addTask(long projectId, String name, LocalDateTime creationTimestamp) {
 
-        List<Task> currentList = tasksLiveData.getValue();
+        List<Task> tasks = tasksLiveData.getValue();
 
-        if (currentList == null) {
-            currentList = new ArrayList<>();
+        if (tasks == null) {
+            tasks = new ArrayList<>();
         }
 
-        currentList.add(
+        tasks.add(
             new Task(
-                maxId,
+                maxId++,
                 projectId,
                 name,
                 creationTimestamp
@@ -42,7 +45,7 @@ public class TaskRepository {
         );
         maxId++;
 
-        tasksLiveData.setValue(currentList);
+        tasksLiveData.setValue(tasks);
     }
 
     public void deleteTask(long taskId) {
@@ -57,10 +60,10 @@ public class TaskRepository {
                 iterator.remove();
                 break;
             }
-
-            tasksLiveData.setValue(tasks);
         }
+        tasksLiveData.setValue(tasks);
     }
+
 
     @NonNull
     public LiveData<List<Task>> getTasksLiveData() {
@@ -68,7 +71,9 @@ public class TaskRepository {
     }
 
     private void generateRandomTasks() {
-        addTask(1, "Test task 1", LocalDateTime.now());
+        addTask(1, "Faire", LocalDateTime.now());
+        addTask(2, "Acheter", LocalDateTime.now());
+        addTask(3, "Build", LocalDateTime.now());
 
     }
 }

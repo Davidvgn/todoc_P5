@@ -27,20 +27,6 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         />
 
-
-    <!--Todo david
-    <TextView
-        android:id="@+id/lbl_no_task"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:drawableTop="@drawable/ic_baseline_work_off_24"
-        android:text="@string/no_task"
-        android:textSize="22sp"
-        app:layout_anchor="@+id/main_container"
-        app:layout_anchorGravity="center"
-        tools:visibility="visible" />-->
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/main_fab_add"
         android:layout_width="wrap_content"

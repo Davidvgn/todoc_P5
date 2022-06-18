@@ -20,14 +20,13 @@ import com.davidvignon.todoc.ViewModelFactory;
 import com.davidvignon.todoc.data.SortingType;
 import com.davidvignon.todoc.data.project.Project;
 import com.davidvignon.todoc.databinding.TasksFragmentBinding;
+import com.davidvignon.todoc.ui.OnTaskClickedListener;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class TasksListFragment extends Fragment {
-
-    private SortingType sortingType = SortingType.NONE;
 
     public static TasksListFragment newInstance() {
         TasksListFragment fragment = new TasksListFragment();
@@ -58,16 +57,20 @@ public class TasksListFragment extends Fragment {
         }
 
         viewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(TasksListViewModel.class);
-        TasksListAdapter adapter = new TasksListAdapter(taskId -> viewModel.onDeleteViewModelClicked(taskId));
+        TasksListAdapter adapter = new TasksListAdapter(new OnTaskClickedListener() {
+            @Override
+            public void onDeleteTaskClicked(long taskId) {
+                viewModel.onDeleteViewModelClicked(taskId);
+            }
+        });
         binding.taskRv.setAdapter(adapter);
 
         viewModel.getTasksViewStateItemsLiveData().observe(getViewLifecycleOwner(), new Observer<List<TasksViewStateItem>>() {
             @Override
-            public void onChanged(List<TasksViewStateItem> list) {
-                adapter.submitList(list);
+            public void onChanged(List<TasksViewStateItem> tasksViewStateItems) {
+                adapter.submitList(tasksViewStateItems);
             }
         });
-
     }
 
     @Override
@@ -81,8 +84,7 @@ public class TasksListFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.filter_alphabetical:
-                sortingType = SortingType.ALPHABETICAL;
-                viewModel.sortList(sortingType);
+                viewModel.sortList(SortingType.ALPHABETICAL);
                 return true;
             case R.id.filter_alphabetical_inverted:
                 viewModel.sortList(SortingType.ALPHABETICAL_INVERTED);

@@ -11,62 +11,112 @@ import com.davidvignon.todoc.data.task.TaskRepository;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class TasksViewStateItem {
+public abstract class TasksViewStateItem {
 
-    private final long id;
-    private  final long projectId;
-
-    @NonNull
-    private String name;
-    private LocalDateTime creationTimestamp;
-
-    public TasksViewStateItem(long id, long projectId, @NonNull String name, LocalDateTime creationTimestamp) {
-        this.id = id;
-        this.projectId = projectId;
-        this.name = name;
-        this.creationTimestamp = creationTimestamp;
-
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public Project getProject(){
-        return ProjectRepository.getProjectById(projectId);
+    public enum Type {
+        TASK,
+        EMPTY_STATE
     }
 
     @NonNull
-    public String getName() {
-        return name;
+    protected final Type type;
+    private String nameTask;
+
+
+
+    public TasksViewStateItem(@NonNull Type type) {
+        this.type = type;
     }
 
-    public LocalDateTime getCreationTimestamp() {
-        return creationTimestamp;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TasksViewStateItem task = (TasksViewStateItem) o;
-        return id == task.id &&
-            projectId == task.projectId &&
-            name.equals(task.name) &&
-            creationTimestamp == task.creationTimestamp;
-    }
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, projectId, name, creationTimestamp);
+    @NonNull
+    public Type getType() {
+        return type;
     }
 
     @Override
-    public String toString() {
-        return "Task{" +
-            "id=" + id +
-            ", projectId=" + projectId +
-            ", name='" + name + '\'' +
-            ", creationTimeStamp ='" + creationTimestamp + '\'' +
-            '}';
+    public abstract boolean equals(@Nullable Object obj);
+
+    public static class Task extends TasksViewStateItem {
+
+        private final long id;
+        private final long projectId;
+
+        @NonNull
+        private String name;
+        private LocalDateTime creationTimestamp;
+
+        public Task(long id, long projectId, @NonNull String name, LocalDateTime creationTimestamp) {
+            super(Type.TASK);
+
+            this.id = id;
+            this.projectId = projectId;
+            this.name = name;
+            this.creationTimestamp = creationTimestamp;
+
+        }
+
+        public long getTaskId() {
+            return id;
+        }
+
+        public Project getProject() {
+            return ProjectRepository.getProjectById(projectId);
+        }
+
+        @NonNull
+        public String getName() {
+            return name;
+        }
+
+        public LocalDateTime getCreationTimestamp() {
+            return creationTimestamp;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Task task = (Task) o;
+            return id == task.id &&
+                projectId == task.projectId &&
+                name.equals(task.name) &&
+                creationTimestamp == task.creationTimestamp;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(id, projectId, name, creationTimestamp);
+        }
+
+        @Override
+        public String toString() {
+            return "Task{" +
+                "id=" + id +
+                ", projectId=" + projectId +
+                ", name='" + name + '\'' +
+                ", creationTimeStamp ='" + creationTimestamp + '\'' +
+                '}';
+        }
+    }
+
+    public static class EmptyState extends TasksViewStateItem {
+
+        public EmptyState() {
+            super(Type.EMPTY_STATE);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            return o != null && getClass() == o.getClass();
+        }
+
+        @NonNull
+        @Override
+        public String toString() {
+            return "EmptyState{" +
+                "type=" + type +
+                '}';
+        }
     }
 }

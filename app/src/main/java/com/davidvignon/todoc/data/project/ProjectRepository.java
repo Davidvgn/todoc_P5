@@ -1,25 +1,35 @@
 package com.davidvignon.todoc.data.project;
 
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.WorkerThread;
+import androidx.lifecycle.LiveData;
+
+import com.davidvignon.todoc.data.dao.ProjectDao;
+
+import java.util.List;
+import java.util.concurrent.Executor;
 
 public class ProjectRepository {
 
-    @NonNull
-    public static Project[] getAllProjects() {
-        return new Project[]{
-            new Project(1L, "Projet Tartampion", 0xFFEADAD1),
-            new Project(2L, "Projet Lucidia", 0xFFB4CDBA),
-            new Project(3L, "Projet Circus", 0xFFA3CED2),
-        };
+    private final ProjectDao projectDao;
+
+    public ProjectRepository(ProjectDao projectDao) {
+        this.projectDao = projectDao;
     }
 
-    @Nullable
-    public static Project getProjectById(long id) {
-        for (Project project : getAllProjects()) {
-            if (project.id == id)
-                return project;
-        }
-        return null;
+    @MainThread
+    @NonNull
+    public LiveData<List<Project>> getAllProjects() {
+        return projectDao.getAllProjects();
+        // TODO Ask DAO (this time with a LiveData was will be filled later in time)
+    }
+
+    @WorkerThread
+    @NonNull
+    public Project getProjectById(long id) {
+        return projectDao.getProjectById(id);
+        // TODO Ask DAO (which will work asynchronously, thanks to an Executor!)
     }
 }

@@ -1,23 +1,36 @@
 package com.davidvignon.todoc.data.task;
 
-import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.PrimaryKey;
+
+import com.davidvignon.todoc.data.project.Project;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Entity (
+    tableName = "task",foreignKeys = @ForeignKey(
+    entity = Project.class,
+    parentColumns = "projectId",
+    childColumns = "projectId")
+)
 public class Task {
 
+    @PrimaryKey(autoGenerate = true)
     private final long id;
+
     private final long projectId;
 
-    @NonNull
-    private String name;
-    private LocalDateTime creationTimestamp;
+    private String taskDescription;
+    
+//    private LocalDateTime creationTimestamp;
+    private String creationTimestamp = LocalDateTime.now().toString();
 
-    public Task(long id, long projectId, @NonNull String name, LocalDateTime creationTimestamp) {
+    public Task(long id, Long projectId, String taskDescription, String creationTimestamp) {
         this.id = id;
         this.projectId = projectId;
-        this.name = name;
+        this.taskDescription = taskDescription;
         this.creationTimestamp = creationTimestamp;
 
     }
@@ -30,12 +43,11 @@ public class Task {
         return projectId;
     }
 
-    @NonNull
-    public String getName() {
-        return name;
+    public String getTaskDescription() {
+        return taskDescription;
     }
 
-    public LocalDateTime getCreationTimestamp() {
+    public String getCreationTimestamp() {
         return creationTimestamp;
     }
 
@@ -46,13 +58,13 @@ public class Task {
         Task task = (Task) o;
         return id == task.id &&
             projectId == task.projectId &&
-            name.equals(task.name) &&
+            taskDescription.equals(task.taskDescription) &&
             creationTimestamp == task.creationTimestamp;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, projectId, name, creationTimestamp);
+        return Objects.hash(id, projectId, taskDescription, creationTimestamp);
     }
 
     @Override
@@ -60,7 +72,7 @@ public class Task {
         return "Task{" +
             "id=" + id +
             ", projectId=" + projectId +
-            ", name='" + name + '\'' +
+            ", taskDescription='" + taskDescription + '\'' +
             ", creationTimeStamp ='" + creationTimestamp + '\'' +
             '}';
     }

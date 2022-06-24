@@ -1,79 +1,65 @@
 package com.davidvignon.todoc.data.task;
 
+import android.app.Application;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.WorkerThread;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import com.davidvignon.todoc.BuildConfig;
+import com.davidvignon.todoc.data.AppDatabase;
 import com.davidvignon.todoc.data.dao.ProjectDao;
+import com.davidvignon.todoc.data.dao.TaskDao;
 import com.davidvignon.todoc.data.project.Project;
-import com.davidvignon.todoc.data.task.Task;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 public class TaskRepository {
 
-    private final MutableLiveData<List<Task>> tasksLiveData = new MutableLiveData<>(new ArrayList<>());
+    @NonNull
+    private final TaskDao taskDao;
 
-    private long maxId = 0;
+    public TaskRepository(@NonNull TaskDao taskDao) {
 
-    public TaskRepository() {
-        if (BuildConfig.DEBUG) {
-            generateRandomTasks();
-        }
+        this.taskDao = taskDao;
+//
+//        if (BuildConfig.DEBUG) {
+//            generateRandomTasks();
+//        }
     }
 
-    public void addTask(long projectId, String name, LocalDateTime creationTimestamp) {
-
-        List<Task> tasks = tasksLiveData.getValue();
-
-        if (tasks == null) {
-            tasks = new ArrayList<>();
-        }
-
-        tasks.add(
-            new Task(
-                maxId++,
-                projectId,
-                name,
-                creationTimestamp
-            )
+    @WorkerThread
+    public void addTask(long projectId, String name, String creationTimestamp) {
+        taskDao.insert(
+                new Task(
+                        0, // 0 to tell autoincrement to work
+                        projectId,
+                        name,
+                        creationTimestamp
+                )
         );
-        maxId++;
-
-        tasksLiveData.setValue(tasks);
     }
 
+    @WorkerThread
     public void deleteTask(long taskId) {
-        List<Task> tasks = tasksLiveData.getValue();
-
-        if (tasks == null) return;
-
-        for (Iterator<Task> iterator = tasks.iterator(); iterator.hasNext(); ) {
-            Task task = iterator.next();
-
-            if (task.getId() == taskId) {
-                iterator.remove();
-                break;
-            }
-        }
-        tasksLiveData.setValue(tasks);
+        taskDao.deleteTask(taskId);
     }
 
 
     @NonNull
     public LiveData<List<Task>> getTasksLiveData() {
-        return tasksLiveData;
+        return taskDao.getTasksLiveData();
     }
 
-    private void generateRandomTasks() {
-        addTask(1, "Faire", LocalDateTime.now());
-        addTask(2, "Acheter", LocalDateTime.now());
-        addTask(3, "Build", LocalDateTime.now());
-
-    }
+//    @WorkerThread
+//    private void generateRandomTasks() {
+//        addTask(1, "Faire", LocalDateTime.now().toString());
+//        addTask(2, "Acheter", LocalDateTime.now().toString());
+//        addTask(3, "Build", LocalDateTime.now().toString());
+//
+//    }
 }

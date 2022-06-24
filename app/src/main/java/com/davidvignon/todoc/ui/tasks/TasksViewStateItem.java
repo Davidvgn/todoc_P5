@@ -3,13 +3,13 @@ package com.davidvignon.todoc.ui.tasks;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.davidvignon.todoc.data.dao.ProjectDao;
 import com.davidvignon.todoc.data.project.Project;
 import com.davidvignon.todoc.data.project.ProjectRepository;
-import com.davidvignon.todoc.data.task.Task;
-import com.davidvignon.todoc.data.task.TaskRepository;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.concurrent.Executor;
 
 public abstract class TasksViewStateItem {
 
@@ -20,8 +20,6 @@ public abstract class TasksViewStateItem {
 
     @NonNull
     protected final Type type;
-    private String nameTask;
-
 
 
     public TasksViewStateItem(@NonNull Type type) {
@@ -39,36 +37,42 @@ public abstract class TasksViewStateItem {
     public static class Task extends TasksViewStateItem {
 
         private final long id;
-        private final long projectId;
 
         @NonNull
-        private String name;
-        private LocalDateTime creationTimestamp;
+        private String taskDescription;
+        private long projectId;
+        private ProjectRepository projectRepo;
 
-        public Task(long id, long projectId, @NonNull String name, LocalDateTime creationTimestamp) {
+        Executor ioExecutor;
+
+
+        //        private LocalDateTime creationTimestamp;
+        private String creationTimestamp = LocalDateTime.now().toString();
+
+        public Task(long id, long projectId, @NonNull String taskDescription, String creationTimestamp) {
             super(Type.TASK);
 
             this.id = id;
             this.projectId = projectId;
-            this.name = name;
+            this.taskDescription = taskDescription;
             this.creationTimestamp = creationTimestamp;
-
         }
 
         public long getTaskId() {
             return id;
         }
 
-        public Project getProject() {
-            return ProjectRepository.getProjectById(projectId);
-        }
-
         @NonNull
-        public String getName() {
-            return name;
+        public String getTaskDescription() {
+            return taskDescription;
         }
 
-        public LocalDateTime getCreationTimestamp() {
+        public Project getProject(){
+//            return projectRepo.getProjectById(projectId);//todo david return NPE
+            return null; //todo david en attendant de trouver la solution
+        }
+
+        public String getCreationTimestamp() {
             return creationTimestamp;
         }
 
@@ -79,13 +83,13 @@ public abstract class TasksViewStateItem {
             Task task = (Task) o;
             return id == task.id &&
                 projectId == task.projectId &&
-                name.equals(task.name) &&
+                taskDescription.equals(task.taskDescription) &&
                 creationTimestamp == task.creationTimestamp;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(id, projectId, name, creationTimestamp);
+            return Objects.hash(id, projectId, taskDescription, creationTimestamp);
         }
 
         @Override
@@ -93,7 +97,7 @@ public abstract class TasksViewStateItem {
             return "Task{" +
                 "id=" + id +
                 ", projectId=" + projectId +
-                ", name='" + name + '\'' +
+                ", name='" + taskDescription + '\'' +
                 ", creationTimeStamp ='" + creationTimestamp + '\'' +
                 '}';
         }

@@ -1,5 +1,6 @@
 package com.davidvignon.todoc.ui.tasks;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -7,28 +8,30 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.davidvignon.todoc.data.SortingType;
+import com.davidvignon.todoc.data.project.Project;
 import com.davidvignon.todoc.data.task.Task;
 import com.davidvignon.todoc.data.task.TaskRepository;
 import com.davidvignon.todoc.utils.SingleLiveEvent;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.concurrent.Executor;
 
 public class TasksListViewModel extends ViewModel {
 
     private final TaskRepository taskRepository;
+    @NonNull
+    private final Executor ioExecutor;
 
     private final MediatorLiveData<List<TasksViewStateItem>> mediatorLiveData = new MediatorLiveData<>();
     private final SingleLiveEvent<SortingType> sortingListMediatorLiveData = new SingleLiveEvent<>();
 
 
-    public TasksListViewModel(TaskRepository taskRepository) {
+    public TasksListViewModel(TaskRepository taskRepository, Executor ioExecutor) {
         this.taskRepository = taskRepository;
+        this.ioExecutor = ioExecutor;
 
         LiveData<List<Task>> tasksLiveData = taskRepository.getTasksLiveData();
 
@@ -60,14 +63,14 @@ public class TasksListViewModel extends ViewModel {
             Collections.sort(tasks, new Comparator<Task>() {
                 @Override
                 public int compare(Task o1, Task o2) {
-                    return o1.getName().compareToIgnoreCase(o2.getName());
+                    return o1.getTaskDescription().compareToIgnoreCase(o2.getTaskDescription());
                 }
             });
         } else if (sortingType == SortingType.ALPHABETICAL_INVERTED) {
             Collections.sort(tasks, new Comparator<Task>() {
                 @Override
                 public int compare(Task o1, Task o2) {
-                    return o2.getName().compareToIgnoreCase(o1.getName());
+                    return o2.getTaskDescription().compareToIgnoreCase(o1.getTaskDescription());
                 }
             });
         } else if (sortingType == SortingType.RECENT_FIRST) {
@@ -93,7 +96,7 @@ public class TasksListViewModel extends ViewModel {
                 new TasksViewStateItem.Task(
                     task.getId(),
                     task.getProjectId(),
-                    task.getName(),
+                    task.getTaskDescription(),
                     task.getCreationTimestamp()
                 )
             );
@@ -106,7 +109,12 @@ public class TasksListViewModel extends ViewModel {
     }
 
     public void onDeleteViewModelClicked(long taskId) {
-        taskRepository.deleteTask(taskId);
+        ioExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                taskRepository.deleteTask(taskId);
+            }
+        });
     }
 
     public void sortList(SortingType sortingType) {

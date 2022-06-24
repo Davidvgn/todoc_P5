@@ -2,33 +2,32 @@ package com.davidvignon.todoc.data.project;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import org.jetbrains.annotations.NotNull;
 
-@Entity
+import java.util.Objects;
+
+
+@Entity(tableName = "project")
 public class Project {
 
     @PrimaryKey
-    public final long id;
+    private final Long projectId;
 
     @NonNull
-    @ColumnInfo
     private final String name;
 
     @ColorInt
-    @ColumnInfo
     private final int color;
 
-    public Project(long id, @NonNull String name, @ColorInt int color) {
-        this.id = id;
+    public Project(Long projectId, @NonNull String name, int color) {
+        this.projectId = projectId;
         this.name = name;
         this.color = color;
-    }
-
-    public long getId() {
-        return id;
     }
 
     @NonNull
@@ -36,6 +35,9 @@ public class Project {
         return name;
     }
 
+    public Long getProjectId() {
+        return projectId;
+    }
 
     @ColorInt
     public int getColor() {
@@ -43,8 +45,28 @@ public class Project {
     }
 
     @Override
-    @NonNull
-    public String toString() {
-        return getName();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Project that = (Project) o;
+        return projectId == that.projectId &&
+            color == that.color &&
+            name.equals(that.name);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(projectId, name, color);
+    }
+
+    @NonNull
+    @NotNull
+    @Override
+    public String toString() {
+        return "Project{" +
+            "projectId=" + projectId +
+            ", name='" + name + '\'' +
+            ", color=" + color +
+            '}';    }
 }
+

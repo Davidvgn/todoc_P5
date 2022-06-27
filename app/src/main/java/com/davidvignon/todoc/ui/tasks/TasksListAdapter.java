@@ -81,11 +81,8 @@ public class TasksListAdapter extends ListAdapter<TasksViewStateItem, RecyclerVi
 
         @SuppressLint("RestrictedApi")
         public void bind(TasksViewStateItem.Task item, OnTaskClickedListener listener) {
-            Project project = item.getProject();
-
-            //todo david : en commentaire le temps de trouver la solution
-//            projectColor.setSupportImageTintList(ColorStateList.valueOf(project.getColor()));
-//            projectName.setText(project.getName());
+            projectColor.setSupportImageTintList(ColorStateList.valueOf(item.getProjectColor()));
+            projectName.setText(item.getProjectName());
             taskDescription.setText(item.getTaskDescription());
             deleteImage.setOnClickListener(new View.OnClickListener() {
                 @Override

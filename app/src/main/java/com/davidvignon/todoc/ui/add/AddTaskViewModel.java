@@ -15,6 +15,7 @@ import com.davidvignon.todoc.data.task.TaskRepository;
 import com.davidvignon.todoc.utils.SingleLiveEvent;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 
@@ -51,6 +52,7 @@ public class AddTaskViewModel extends ViewModel {
     }
 
     private void combine(List<Project> projects, String nameError) {
+
         addTaskViewStateMediatorLiveData.setValue(
             new AddTaskViewState(
                 projects,

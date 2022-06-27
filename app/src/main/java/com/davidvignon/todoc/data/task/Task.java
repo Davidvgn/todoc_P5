@@ -1,5 +1,6 @@
 package com.davidvignon.todoc.data.task;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
@@ -22,12 +23,12 @@ public class Task {
 
     private final long projectId;
 
-    private String taskDescription;
+    @NonNull
+    private final String taskDescription;
     
-//    private LocalDateTime creationTimestamp;
     private String creationTimestamp = LocalDateTime.now().toString();
 
-    public Task(long id, Long projectId, String taskDescription, String creationTimestamp) {
+    public Task(long id, Long projectId,@NonNull String taskDescription, String creationTimestamp) {
         this.id = id;
         this.projectId = projectId;
         this.taskDescription = taskDescription;
@@ -43,6 +44,7 @@ public class Task {
         return projectId;
     }
 
+    @NonNull
     public String getTaskDescription() {
         return taskDescription;
     }
@@ -59,7 +61,7 @@ public class Task {
         return id == task.id &&
             projectId == task.projectId &&
             taskDescription.equals(task.taskDescription) &&
-            creationTimestamp == task.creationTimestamp;
+            creationTimestamp.equals(task.creationTimestamp);
     }
 
     @Override

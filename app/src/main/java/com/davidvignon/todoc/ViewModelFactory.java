@@ -53,6 +53,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
 //            Object projectRepository;
             return (T) new TasksListViewModel(
                 taskRepository,
+                projectRepository,
                 ioExecutor
             );
         } else if (modelClass.isAssignableFrom(AddTaskViewModel.class)) {

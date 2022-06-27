@@ -1,7 +1,6 @@
 package com.davidvignon.todoc.data;
 
 import android.app.Application;
-import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -68,9 +67,9 @@ public abstract class AppDatabase extends RoomDatabase {
                     ioExecutor.execute(() -> {
                         TaskDao taskDao = AppDatabase.getInstance(application, ioExecutor).getTaskDao();
 
-                        taskDao.insert(new Task(1, 1L, "Faire", LocalDateTime.now().toString()));
-                        taskDao.insert(new Task(2, 2L, "Truc", LocalDateTime.now().toString()));
-                        taskDao.insert(new Task(3, 3L, "Machin", LocalDateTime.now().toString()));
+                        taskDao.insert(new Task(1, 1L, "Faire la vaisselle", LocalDateTime.now().toString()));
+                        taskDao.insert(new Task(2, 2L, "Ranger les cartons", LocalDateTime.now().toString()));
+                        taskDao.insert(new Task(3, 3L, "Repassage", LocalDateTime.now().toString()));
                     });
                 }
             }

@@ -1,15 +1,11 @@
 package com.davidvignon.todoc.ui.tasks;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.davidvignon.todoc.data.dao.ProjectDao;
-import com.davidvignon.todoc.data.project.Project;
-import com.davidvignon.todoc.data.project.ProjectRepository;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.concurrent.Executor;
 
 public abstract class TasksViewStateItem {
 
@@ -37,23 +33,22 @@ public abstract class TasksViewStateItem {
     public static class Task extends TasksViewStateItem {
 
         private final long id;
-
+        private final long projectId;
+        private final String projectName;
+        @ColorInt
+        private final int projectColor;
         @NonNull
-        private String taskDescription;
-        private long projectId;
-        private ProjectRepository projectRepo;
+        private final String taskDescription;
 
-        Executor ioExecutor;
-
-
-        //        private LocalDateTime creationTimestamp;
         private String creationTimestamp = LocalDateTime.now().toString();
 
-        public Task(long id, long projectId, @NonNull String taskDescription, String creationTimestamp) {
+        public Task(long id, long projectId, String projectName,@ColorInt int projectColor, @NonNull String taskDescription, String creationTimestamp) {
             super(Type.TASK);
 
             this.id = id;
             this.projectId = projectId;
+            this.projectName = projectName;
+            this.projectColor = projectColor;
             this.taskDescription = taskDescription;
             this.creationTimestamp = creationTimestamp;
         }
@@ -62,19 +57,22 @@ public abstract class TasksViewStateItem {
             return id;
         }
 
+        public String getProjectName() {
+            return projectName;
+        }
+
+        public int getProjectColor() {
+            return projectColor;
+        }
+
         @NonNull
         public String getTaskDescription() {
             return taskDescription;
         }
 
-        public Project getProject(){
-//            return projectRepo.getProjectById(projectId);//todo david return NPE
-            return null; //todo david en attendant de trouver la solution
-        }
-
-        public String getCreationTimestamp() {
-            return creationTimestamp;
-        }
+//        public String getCreationTimestamp() {
+//            return creationTimestamp;
+//        }
 
         @Override
         public boolean equals(Object o) {
@@ -84,7 +82,7 @@ public abstract class TasksViewStateItem {
             return id == task.id &&
                 projectId == task.projectId &&
                 taskDescription.equals(task.taskDescription) &&
-                creationTimestamp == task.creationTimestamp;
+                creationTimestamp.equals(task.creationTimestamp);
         }
 
         @Override

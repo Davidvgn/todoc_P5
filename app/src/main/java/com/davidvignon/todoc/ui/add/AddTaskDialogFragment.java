@@ -21,6 +21,9 @@ import com.davidvignon.todoc.R;
 import com.davidvignon.todoc.ViewModelFactory;
 import com.davidvignon.todoc.data.project.Project;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AddTaskDialogFragment extends DialogFragment {
 
     public static DialogFragment newInstance() {
@@ -49,20 +52,28 @@ public class AddTaskDialogFragment extends DialogFragment {
         Spinner dialogSpinner = view.findViewById(R.id.dialog_project_spinner);
         Button addTaskButton = view.findViewById(R.id.dialog_button);
 
+
         addTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewModel.onAddButtonClicked(
                     dialogSpinner.getSelectedItemId() + 1,
                     dialogEditText.getText().toString()
-                    );
+                );
             }
         });
 
         viewModel.getAddTaskViewStateLiveData().observe(this, new Observer<AddTaskViewState>() {
             @Override
             public void onChanged(AddTaskViewState addTaskViewState) {
-                ArrayAdapter<Project> adapter = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_spinner_item, addTaskViewState.getProjects());
+                int[] projectListSize = new int[addTaskViewState.getProjects().size()];
+                List<String> projectNameList = new ArrayList<>();
+
+                for (int i = 0; i < projectListSize.length; i++) {
+                    projectNameList.add(addTaskViewState.getProjects().get(i).getName());
+                }
+
+                ArrayAdapter adapter = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_spinner_item, projectNameList);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 dialogSpinner.setAdapter(adapter);
 

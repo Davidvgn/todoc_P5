@@ -1,7 +1,6 @@
 package com.davidvignon.todoc.data;
 
 import android.app.Application;
-import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -10,6 +9,7 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.davidvignon.todoc.BuildConfig;
+import com.davidvignon.todoc.R;
 import com.davidvignon.todoc.data.dao.ProjectDao;
 import com.davidvignon.todoc.data.dao.TaskDao;
 import com.davidvignon.todoc.data.project.Project;
@@ -60,17 +60,17 @@ public abstract class AppDatabase extends RoomDatabase {
                     ProjectDao projectDao = AppDatabase.getInstance(application, ioExecutor).getProjectDao();
 
 
-                    projectDao.insert(new Project(1L, "Projet Tartampion", 0xFFEADAD1));
-                    projectDao.insert(new Project(2L, "Projet Lucidia", 0xFFB4CDBA));
-                    projectDao.insert(new Project(3L, "Projet Circus", 0xFFA3CED2));
+                    projectDao.insert(new Project(1L, application.getString(R.string.tartampion_project), 0xFFEADAD1));
+                    projectDao.insert(new Project(2L, application.getString(R.string.lucidia_project), 0xFFB4CDBA));
+                    projectDao.insert(new Project(3L, application.getString(R.string.circus_project), 0xFFA3CED2));
                 });
                 if (BuildConfig.DEBUG) {
                     ioExecutor.execute(() -> {
                         TaskDao taskDao = AppDatabase.getInstance(application, ioExecutor).getTaskDao();
 
-                        taskDao.insert(new Task(1, 1L, "Faire", LocalDateTime.now().toString()));
-                        taskDao.insert(new Task(2, 2L, "Truc", LocalDateTime.now().toString()));
-                        taskDao.insert(new Task(3, 3L, "Machin", LocalDateTime.now().toString()));
+                        taskDao.insert(new Task(1, 1L, application.getString(R.string.dishes), LocalDateTime.now().toString()));
+                        taskDao.insert(new Task(2, 2L, application.getString(R.string.mop), LocalDateTime.now().toString()));
+                        taskDao.insert(new Task(3, 3L, application.getString(R.string.iron), LocalDateTime.now().toString()));
                     });
                 }
             }

@@ -5,6 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
+import com.davidvignon.todoc.data.ProjectWithTask;
 import com.davidvignon.todoc.data.task.Task;
 
 import java.util.List;
@@ -15,8 +16,8 @@ public interface TaskDao {
     @Insert
     long insert(Task task);
 
-    @Query("SELECT * FROM task")
-    LiveData<List<Task>> getTasksLiveData();
+    @Query("SELECT * FROM project")
+    LiveData<List<ProjectWithTask>> getAllProjectsWithTasks();
 
     @Query("DELETE FROM task WHERE id=:id")
     int deleteTask(long id);

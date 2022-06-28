@@ -1,5 +1,7 @@
 package com.davidvignon.todoc.ui.add;
 
+import android.app.Application;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -7,12 +9,10 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
-import com.davidvignon.todoc.data.dao.ProjectDao;
+import com.davidvignon.todoc.R;
 import com.davidvignon.todoc.data.project.Project;
 import com.davidvignon.todoc.data.project.ProjectRepository;
-import com.davidvignon.todoc.data.task.Task;
 import com.davidvignon.todoc.data.task.TaskRepository;
-import com.davidvignon.todoc.utils.SingleLiveEvent;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,6 +22,7 @@ public class AddTaskViewModel extends ViewModel {
 
     private final TaskRepository taskRepository;
     public ProjectRepository projectRepository;
+    private final Application application;
 
     private final Executor ioExecutor;
 
@@ -29,10 +30,12 @@ public class AddTaskViewModel extends ViewModel {
     private final MediatorLiveData<AddTaskViewState> addTaskViewStateMediatorLiveData = new MediatorLiveData<>();
     private final MutableLiveData<String> nameErrorMutableLiveData = new MutableLiveData<>();
 
-    public AddTaskViewModel(TaskRepository taskRepository, ProjectRepository projectRepository, Executor ioExecutor) {
+    public AddTaskViewModel(Application application, TaskRepository taskRepository, ProjectRepository projectRepository, Executor ioExecutor) {
+        this.application = application;
         this.taskRepository = taskRepository;
         this.projectRepository = projectRepository;
         this.ioExecutor = ioExecutor;
+
 
         LiveData<List<Project>> allProjectsLivedata = projectRepository.getAllProjects();
 
@@ -51,6 +54,7 @@ public class AddTaskViewModel extends ViewModel {
     }
 
     private void combine(List<Project> projects, String nameError) {
+
         addTaskViewStateMediatorLiveData.setValue(
             new AddTaskViewState(
                 projects,
@@ -82,7 +86,7 @@ public class AddTaskViewModel extends ViewModel {
                         creationTimestamp.toString()
                     );
                 } else {
-                    nameErrorMutableLiveData.setValue("Name shouldn't be empty !");
+                    nameErrorMutableLiveData.setValue(application.getString(R.string.empty_name));
                 }
             }
         });

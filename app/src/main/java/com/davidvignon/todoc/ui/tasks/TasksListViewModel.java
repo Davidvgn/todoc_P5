@@ -7,8 +7,9 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
+import com.davidvignon.todoc.data.ProjectWithTask;
 import com.davidvignon.todoc.data.SortingType;
-import com.davidvignon.todoc.data.project.Project;
+import com.davidvignon.todoc.data.project.ProjectRepository;
 import com.davidvignon.todoc.data.task.Task;
 import com.davidvignon.todoc.data.task.TaskRepository;
 import com.davidvignon.todoc.utils.SingleLiveEvent;
@@ -22,6 +23,7 @@ import java.util.concurrent.Executor;
 public class TasksListViewModel extends ViewModel {
 
     private final TaskRepository taskRepository;
+    private final ProjectRepository projectRepository;
     @NonNull
     private final Executor ioExecutor;
 
@@ -29,22 +31,23 @@ public class TasksListViewModel extends ViewModel {
     private final SingleLiveEvent<SortingType> sortingListMediatorLiveData = new SingleLiveEvent<>();
 
 
-    public TasksListViewModel(TaskRepository taskRepository, Executor ioExecutor) {
+    public TasksListViewModel(TaskRepository taskRepository,ProjectRepository projectRepository, Executor ioExecutor) {
         this.taskRepository = taskRepository;
+        this.projectRepository = projectRepository;
         this.ioExecutor = ioExecutor;
 
-        LiveData<List<Task>> tasksLiveData = taskRepository.getTasksLiveData();
+        LiveData<List<ProjectWithTask>> projectWithTask = taskRepository.getAllProjectsWithTasks();
 
-        mediatorLiveData.addSource(tasksLiveData, new Observer<List<Task>>() {
+        mediatorLiveData.addSource(projectWithTask, new Observer<List<ProjectWithTask>>() {
             @Override
-            public void onChanged(List<Task> tasks) {
-                combine(tasks, sortingListMediatorLiveData.getValue());
+            public void onChanged(List<ProjectWithTask> projectWithTask) {
+                combine(projectWithTask, sortingListMediatorLiveData.getValue());
             }
         });
         mediatorLiveData.addSource(sortingListMediatorLiveData, new Observer<SortingType>() {
             @Override
             public void onChanged(SortingType sortingType) {
-                combine(tasksLiveData.getValue(), sortingType);
+                combine(projectWithTask.getValue(), sortingType);
             }
         });
     }
@@ -53,59 +56,71 @@ public class TasksListViewModel extends ViewModel {
         return mediatorLiveData;
     }
 
-    private void combine(@Nullable List<Task> tasks,
+    private void combine(@Nullable List<ProjectWithTask> tasks,
         SortingType sortingType) {
         if (tasks == null) {
             return;
         }
 
         if (sortingType == SortingType.ALPHABETICAL) {
-            Collections.sort(tasks, new Comparator<Task>() {
-                @Override
-                public int compare(Task o1, Task o2) {
-                    return o1.getTaskDescription().compareToIgnoreCase(o2.getTaskDescription());
-                }
-            });
+            Collections.sort(tasks, new Comparator<ProjectWithTask>() {
+                    @Override
+                    public int compare(ProjectWithTask o1, ProjectWithTask o2) {
+                        return o1.getProject().getName().compareToIgnoreCase(o2.getProject().getName());
+                    }
+                });
         } else if (sortingType == SortingType.ALPHABETICAL_INVERTED) {
-            Collections.sort(tasks, new Comparator<Task>() {
+            Collections.sort(tasks, new Comparator<ProjectWithTask>() {
                 @Override
-                public int compare(Task o1, Task o2) {
-                    return o2.getTaskDescription().compareToIgnoreCase(o1.getTaskDescription());
+                public int compare(ProjectWithTask o1, ProjectWithTask o2) {
+                    return o2.getProject().getName().compareToIgnoreCase(o1.getProject().getName());
                 }
             });
-        } else if (sortingType == SortingType.RECENT_FIRST) {
-            Collections.sort(tasks, new Comparator<Task>() {
+//        } else if (sortingType == SortingType.RECENT_FIRST){
+//            Collections.sort(Task, new Comparator<Object>() {
+//
+//            }
+//        }
+//            });
+        } else if (sortingType == SortingType.OLD_FIRST){
+            Collections.sort(tasks, new Comparator<ProjectWithTask>() {
                 @Override
-                public int compare(Task o1, Task o2) {
-                    return o1.getCreationTimestamp().compareTo(o2.getCreationTimestamp());
-                }
-            });
-        } else if (sortingType == SortingType.OLD_FIRST) {
-            Collections.sort(tasks, new Comparator<Task>() {
-                @Override
-                public int compare(Task o1, Task o2) {
-                    return o2.getCreationTimestamp().compareTo(o1.getCreationTimestamp());
+                public int compare(ProjectWithTask o1, ProjectWithTask o2) {
+                    return 0;
                 }
             });
         }
 
-        List<TasksViewStateItem> tasksViewStateItems = new ArrayList<>();
 
-        for (Task task : tasks) {
-            tasksViewStateItems.add(
-                new TasksViewStateItem.Task(
-                    task.getId(),
-                    task.getProjectId(),
-                    task.getTaskDescription(),
-                    task.getCreationTimestamp()
-                )
-            );
+//            });
+//        } else if (sortingType == SortingType.RECENT_FIRST) {
+//            Collections.sort(tasks, new Comparator<Task>() {
+//                @Override
+//                public int compare(Task o1, Task o2) {
+//                    return o1.getCreationTimestamp().compareTo(o2.getCreationTimestamp());
+//                }
+//            });
+//        } else if (sortingType == SortingType.OLD_FIRST) {
+//            Collections.sort(tasks, new Comparator<Task>() {
+//                @Override
+//                public int compare(Task o1, Task o2) {
+//                    return o2.getCreationTimestamp().compareTo(o1.getCreationTimestamp());
+//                }
+//            });
+//        }
+        List<TasksViewStateItem> taskViewStates = new ArrayList<>();
+
+        for (ProjectWithTask projectWithTask : tasks){
+            for (Task task : projectWithTask.getTask()){
+                taskViewStates.add(mapItem(projectWithTask, task));
+            }
         }
 
-        if (tasksViewStateItems.isEmpty()) {
-            tasksViewStateItems.add(new TasksViewStateItem.EmptyState());
+            if (taskViewStates.isEmpty()) {
+            taskViewStates.add(new TasksViewStateItem.EmptyState());
         }
-        mediatorLiveData.setValue(tasksViewStateItems);
+
+        mediatorLiveData.setValue(taskViewStates);
     }
 
     public void onDeleteViewModelClicked(long taskId) {
@@ -115,6 +130,17 @@ public class TasksListViewModel extends ViewModel {
                 taskRepository.deleteTask(taskId);
             }
         });
+    }
+
+    private TasksViewStateItem.Task mapItem(ProjectWithTask projectWithTask, Task task) {
+        return new TasksViewStateItem.Task(
+            task.getId(),
+            task.getProjectId(),
+            projectWithTask.getProject().getName(),
+            projectWithTask.getProject().getColor(),
+            task.getTaskDescription(),
+            task.getCreationTimestamp()
+        );
     }
 
     public void sortList(SortingType sortingType) {

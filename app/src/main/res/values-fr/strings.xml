@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Todoc</string>
+    <string name="label_action_filter">Filtre</string>
+    <string name="sort_alphabetical">A -&gt; Z</string>
+    <string name="sort_alphabetical_invert">Z -&gt; A</string>
+    <string name="sort_oldest_first">Plus anciennes</string>
+    <string name="sort_recent_first">Plus récentes</string>
+    <string name="add">Ajouter</string>
+    <string name="no_task">Tu n\'as aucune tâche à traiter</string>
+    <string name="add_task">Ajouter une tâche</string>
+    <string name="task_name_hint">Nom de la tâche</string>
+
+    <string name="tartampion_project">Projet Tartampion</string>
+    <string name="lucidia_project">Projet Lucidia</string>
+    <string name="circus_project">Projet Circus</string>
+
+    <string name="dishes">Faire la vaisselle</string>
+    <string name="iron">Repassage</string>
+    <string name="mop">Passer la serpillère</string>
+
+    <string name="empty_name">Champ description vide</string>
+
+
+</resources>

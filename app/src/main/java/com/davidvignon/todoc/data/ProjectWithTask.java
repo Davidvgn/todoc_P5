@@ -7,7 +7,6 @@ import androidx.room.Relation;
 import com.davidvignon.todoc.data.project.Project;
 import com.davidvignon.todoc.data.task.Task;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 

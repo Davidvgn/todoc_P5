@@ -42,28 +42,6 @@
             app:layout_constraintTop_toBottomOf="@id/dialog_et_task_name"
             android:textSize="14sp"/>
 
-<!--    <com.google.android.material.textfield.TextInputLayout-->
-<!--        android:id="@+id/dialog_project_spinner"-->
-<!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="16dp"-->
-<!--        android:paddingBottom="12dp"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/dialog_et_task_name">-->
-
-<!--        <AutoCompleteTextView-->
-<!--            android:id="@+id/add_task_act_project"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:textSize="16sp"-->
-<!--            android:textStyle="bold" />-->
-
-<!--        &lt;!&ndash;            android:background="@color/light_grey"&ndash;&gt;-->
-<!--        &lt;!&ndash;            android:hint="@string/room"&ndash;&gt;-->
-<!--    </com.google.android.material.textfield.TextInputLayout>-->
-
-
     <View
         android:id="@+id/dialog_view"
         android:layout_width="match_parent"

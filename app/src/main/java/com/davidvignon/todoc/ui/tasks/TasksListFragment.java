@@ -5,9 +5,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Switch;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,7 +15,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.davidvignon.todoc.R;
 import com.davidvignon.todoc.ViewModelFactory;
 import com.davidvignon.todoc.data.SortingType;
-import com.davidvignon.todoc.data.project.Project;
 import com.davidvignon.todoc.databinding.TasksFragmentBinding;
 import com.davidvignon.todoc.ui.OnTaskClickedListener;
 

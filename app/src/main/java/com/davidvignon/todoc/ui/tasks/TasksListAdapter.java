@@ -15,8 +15,6 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.davidvignon.todoc.R;
-import com.davidvignon.todoc.data.project.Project;
-import com.davidvignon.todoc.data.project.ProjectRepository;
 import com.davidvignon.todoc.databinding.TaskEmptyStateItemBinding;
 import com.davidvignon.todoc.ui.OnTaskClickedListener;
 
@@ -62,8 +60,6 @@ public class TasksListAdapter extends ListAdapter<TasksViewStateItem, RecyclerVi
     }
 
     public static class TaskViewHolder extends RecyclerView.ViewHolder {
-
-        private ProjectRepository projectRepository;
 
         private final AppCompatImageView projectColor;
         private final ImageView deleteImage;

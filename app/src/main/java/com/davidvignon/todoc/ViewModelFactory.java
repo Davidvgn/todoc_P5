@@ -16,7 +16,6 @@ import java.util.concurrent.Executors;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
-
     private static ViewModelFactory factory;
 
     private final Executor ioExecutor = Executors.newFixedThreadPool(4);
@@ -58,6 +57,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             );
         } else if (modelClass.isAssignableFrom(AddTaskViewModel.class)) {
             return (T) new AddTaskViewModel(
+                MainApplication.getInstance(),
                 taskRepository,
                 projectRepository,
                 ioExecutor

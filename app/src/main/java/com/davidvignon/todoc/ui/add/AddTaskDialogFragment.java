@@ -19,7 +19,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.davidvignon.todoc.R;
 import com.davidvignon.todoc.ViewModelFactory;
-import com.davidvignon.todoc.data.project.Project;
 
 import java.util.ArrayList;
 import java.util.List;

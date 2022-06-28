@@ -1,7 +1,6 @@
 package com.davidvignon.todoc;
 
 import android.app.Application;
-//todo david faire les string pour les trad avec APPlication
 //todo david faire le tri par time
 //todo david warning
 //todo david test unit

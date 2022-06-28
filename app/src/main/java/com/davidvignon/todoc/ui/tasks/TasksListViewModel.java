@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.davidvignon.todoc.data.ProjectWithTask;
 import com.davidvignon.todoc.data.SortingType;
-import com.davidvignon.todoc.data.project.Project;
 import com.davidvignon.todoc.data.project.ProjectRepository;
 import com.davidvignon.todoc.data.task.Task;
 import com.davidvignon.todoc.data.task.TaskRepository;

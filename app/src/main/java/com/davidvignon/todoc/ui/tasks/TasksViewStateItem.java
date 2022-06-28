@@ -70,10 +70,6 @@ public abstract class TasksViewStateItem {
             return taskDescription;
         }
 
-//        public String getCreationTimestamp() {
-//            return creationTimestamp;
-//        }
-
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;

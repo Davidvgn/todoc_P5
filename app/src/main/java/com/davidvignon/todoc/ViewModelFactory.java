@@ -19,6 +19,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     private static ViewModelFactory factory;
 
     private final Executor ioExecutor = Executors.newFixedThreadPool(4);
+    //todo Nino pourquoi 4 Threads?
 
 
     @NonNull
@@ -29,7 +30,6 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         AppDatabase appDatabase = AppDatabase.getInstance(MainApplication.getInstance(), ioExecutor);
         taskRepository = new TaskRepository(
             appDatabase.getTaskDao());
-//        appDatabase.getProjectDao();
         projectRepository = new ProjectRepository(appDatabase.getProjectDao());
     }
 
@@ -49,10 +49,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
         if (modelClass.isAssignableFrom(TasksListViewModel.class)) {
-//            Object projectRepository;
             return (T) new TasksListViewModel(
                 taskRepository,
-                projectRepository,
                 ioExecutor
             );
         } else if (modelClass.isAssignableFrom(AddTaskViewModel.class)) {

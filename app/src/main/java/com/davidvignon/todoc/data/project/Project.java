@@ -22,7 +22,7 @@ public class Project {
     @ColorInt
     private final int color;
 
-    public Project(Long projectId, @NonNull String name, int color) {
+    public Project(Long projectId, @NonNull String name, @ColorInt int color) {
         this.projectId = projectId;
         this.name = name;
         this.color = color;

@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.davidvignon.todoc.data.ProjectWithTask;
 import com.davidvignon.todoc.data.SortingType;
+import com.davidvignon.todoc.data.project.Project;
 import com.davidvignon.todoc.data.project.ProjectRepository;
 import com.davidvignon.todoc.data.task.Task;
 import com.davidvignon.todoc.data.task.TaskRepository;
@@ -23,7 +24,6 @@ import java.util.concurrent.Executor;
 public class TasksListViewModel extends ViewModel {
 
     private final TaskRepository taskRepository;
-    private final ProjectRepository projectRepository;
     @NonNull
     private final Executor ioExecutor;
 
@@ -31,9 +31,8 @@ public class TasksListViewModel extends ViewModel {
     private final SingleLiveEvent<SortingType> sortingListMediatorLiveData = new SingleLiveEvent<>();
 
 
-    public TasksListViewModel(TaskRepository taskRepository,ProjectRepository projectRepository, Executor ioExecutor) {
+    public TasksListViewModel(TaskRepository taskRepository, Executor ioExecutor) {
         this.taskRepository = taskRepository;
-        this.projectRepository = projectRepository;
         this.ioExecutor = ioExecutor;
 
         LiveData<List<ProjectWithTask>> projectWithTask = taskRepository.getAllProjectsWithTasks();
@@ -62,13 +61,15 @@ public class TasksListViewModel extends ViewModel {
             return;
         }
 
+        List<TasksViewStateItem> taskViewStates = new ArrayList<>();
+
         if (sortingType == SortingType.ALPHABETICAL) {
             Collections.sort(tasks, new Comparator<ProjectWithTask>() {
-                    @Override
-                    public int compare(ProjectWithTask o1, ProjectWithTask o2) {
-                        return o1.getProject().getName().compareToIgnoreCase(o2.getProject().getName());
-                    }
-                });
+                @Override
+                public int compare(ProjectWithTask o1, ProjectWithTask o2) {
+                    return o1.getProject().getName().compareToIgnoreCase(o2.getProject().getName());
+                }
+            });
         } else if (sortingType == SortingType.ALPHABETICAL_INVERTED) {
             Collections.sort(tasks, new Comparator<ProjectWithTask>() {
                 @Override
@@ -76,47 +77,20 @@ public class TasksListViewModel extends ViewModel {
                     return o2.getProject().getName().compareToIgnoreCase(o1.getProject().getName());
                 }
             });
-//        } else if (sortingType == SortingType.RECENT_FIRST){
-//            Collections.sort(Task, new Comparator<Object>() {
-//
-//            }
-//        }
-//            });
-        } else if (sortingType == SortingType.OLD_FIRST){
-            Collections.sort(tasks, new Comparator<ProjectWithTask>() {
-                @Override
-                public int compare(ProjectWithTask o1, ProjectWithTask o2) {
-                    return 0;
-                }
-            });
+        }else if (sortingType == SortingType.OLD_FIRST) {
+
+        }else if (sortingType == SortingType.RECENT_FIRST) {
+
         }
 
-
-//            });
-//        } else if (sortingType == SortingType.RECENT_FIRST) {
-//            Collections.sort(tasks, new Comparator<Task>() {
-//                @Override
-//                public int compare(Task o1, Task o2) {
-//                    return o1.getCreationTimestamp().compareTo(o2.getCreationTimestamp());
-//                }
-//            });
-//        } else if (sortingType == SortingType.OLD_FIRST) {
-//            Collections.sort(tasks, new Comparator<Task>() {
-//                @Override
-//                public int compare(Task o1, Task o2) {
-//                    return o2.getCreationTimestamp().compareTo(o1.getCreationTimestamp());
-//                }
-//            });
-//        }
-        List<TasksViewStateItem> taskViewStates = new ArrayList<>();
-
-        for (ProjectWithTask projectWithTask : tasks){
-            for (Task task : projectWithTask.getTask()){
+        for (ProjectWithTask projectWithTask : tasks) {
+            for (Task task : projectWithTask.getTask()) {
                 taskViewStates.add(mapItem(projectWithTask, task));
             }
         }
 
-            if (taskViewStates.isEmpty()) {
+
+        if (taskViewStates.isEmpty()) {
             taskViewStates.add(new TasksViewStateItem.EmptyState());
         }
 

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 
 import com.davidvignon.todoc.data.ProjectWithTask;
 import com.davidvignon.todoc.data.task.Task;
@@ -16,6 +17,7 @@ public interface TaskDao {
     @Insert
     long insert(Task task);
 
+    @Transaction
     @Query("SELECT * FROM project")
     LiveData<List<ProjectWithTask>> getAllProjectsWithTasks();
 

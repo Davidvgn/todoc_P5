@@ -21,6 +21,7 @@ public class Task {
     @PrimaryKey(autoGenerate = true)
     private final long id;
 
+    @NonNull
     private final long projectId;
 
     @NonNull
@@ -28,7 +29,7 @@ public class Task {
     
     private String creationTimestamp = LocalDateTime.now().toString();
 
-    public Task(long id, Long projectId,@NonNull String taskDescription, String creationTimestamp) {
+    public Task(long id, @NonNull Long projectId,@NonNull String taskDescription, String creationTimestamp) {
         this.id = id;
         this.projectId = projectId;
         this.taskDescription = taskDescription;

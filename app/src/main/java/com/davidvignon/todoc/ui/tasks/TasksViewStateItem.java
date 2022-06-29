@@ -17,7 +17,6 @@ public abstract class TasksViewStateItem {
     @NonNull
     protected final Type type;
 
-
     public TasksViewStateItem(@NonNull Type type) {
         this.type = type;
     }

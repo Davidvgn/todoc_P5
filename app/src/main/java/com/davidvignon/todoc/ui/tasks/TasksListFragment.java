@@ -65,6 +65,8 @@ public class TasksListFragment extends Fragment {
             @Override
             public void onChanged(List<TasksViewStateItem> tasksViewStateItems) {
                 adapter.submitList(tasksViewStateItems);
+                SortingType sortingType = SortingType.NONE;
+
             }
         });
     }
@@ -78,7 +80,6 @@ public class TasksListFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
-        viewModel.sortList(SortingType.NONE);
         switch (item.getItemId()) {
             case R.id.filter_alphabetical:
                 viewModel.sortList(SortingType.ALPHABETICAL);

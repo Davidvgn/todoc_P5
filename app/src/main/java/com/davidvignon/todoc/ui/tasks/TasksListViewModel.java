@@ -109,11 +109,9 @@ public class TasksListViewModel extends ViewModel {
     private TasksViewStateItem.Task mapItem(ProjectWithTask projectWithTask, Task task) {
         return new TasksViewStateItem.Task(
             task.getId(),
-            task.getProjectId(),
             projectWithTask.getProject().getName(),
             projectWithTask.getProject().getColor(),
-            task.getTaskDescription(),
-            task.getCreationTimestamp()
+            task.getTaskDescription()
         );
     }
 

@@ -86,7 +86,7 @@ public class AddTaskViewModel extends ViewModel {
                         creationTimestamp.toString()
                     );
                 } else {
-                    nameErrorMutableLiveData.setValue(application.getString(R.string.empty_name));
+                    nameErrorMutableLiveData.setValue(application.getString(R.string.empty_name));//todo Nino "can't invoke setValue on a background Thread"
                 }
             }
         });

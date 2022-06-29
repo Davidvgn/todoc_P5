@@ -32,24 +32,19 @@ public abstract class TasksViewStateItem {
     public static class Task extends TasksViewStateItem {
 
         private final long id;
-        private final long projectId;
         private final String projectName;
         @ColorInt
         private final int projectColor;
         @NonNull
         private final String taskDescription;
 
-        private String creationTimestamp = LocalDateTime.now().toString();
-
-        public Task(long id, long projectId, String projectName,@ColorInt int projectColor, @NonNull String taskDescription, String creationTimestamp) {
+        public Task(long id, String projectName,@ColorInt int projectColor, @NonNull String taskDescription) {
             super(Type.TASK);
 
             this.id = id;
-            this.projectId = projectId;
             this.projectName = projectName;
             this.projectColor = projectColor;
             this.taskDescription = taskDescription;
-            this.creationTimestamp = creationTimestamp;
         }
 
         public long getTaskId() {
@@ -75,23 +70,19 @@ public abstract class TasksViewStateItem {
             if (o == null || getClass() != o.getClass()) return false;
             Task task = (Task) o;
             return id == task.id &&
-                projectId == task.projectId &&
-                taskDescription.equals(task.taskDescription) &&
-                creationTimestamp.equals(task.creationTimestamp);
+                taskDescription.equals(task.taskDescription);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(id, projectId, taskDescription, creationTimestamp);
+            return Objects.hash(id, taskDescription);
         }
 
         @Override
         public String toString() {
             return "Task{" +
                 "id=" + id +
-                ", projectId=" + projectId +
                 ", name='" + taskDescription + '\'' +
-                ", creationTimeStamp ='" + creationTimestamp + '\'' +
                 '}';
         }
     }

@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 import com.davidvignon.todoc.data.ProjectWithTask;
 import com.davidvignon.todoc.data.dao.TaskDao;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class TaskRepository {
@@ -27,13 +28,12 @@ public class TaskRepository {
     }
 
     @WorkerThread
-    public void addTask(long projectId, String name, String creationTimestamp) {
+    public void addTask(long projectId, String name) {
         taskDao.insert(
                 new Task(
                         0, // 0 to tell autoincrement to work
                         projectId,
-                        name,
-                        creationTimestamp
+                        name
                 )
         );
     }

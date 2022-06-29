@@ -89,6 +89,12 @@ public class TasksListViewModel extends ViewModel {
             }
         }
 
+        Collections.sort(taskViewStates, new Comparator<TasksViewStateItem>() {
+            @Override
+            public int compare(TasksViewStateItem o1, TasksViewStateItem o2) {
+                return Long.compare(((TasksViewStateItem.Task) o1).getTaskId(), ((TasksViewStateItem.Task) o2).getTaskId());
+            }
+        });
 
         if (taskViewStates.isEmpty()) {
             taskViewStates.add(new TasksViewStateItem.EmptyState());

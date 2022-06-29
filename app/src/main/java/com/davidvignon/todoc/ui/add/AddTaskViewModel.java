@@ -13,8 +13,8 @@ import com.davidvignon.todoc.R;
 import com.davidvignon.todoc.data.project.Project;
 import com.davidvignon.todoc.data.project.ProjectRepository;
 import com.davidvignon.todoc.data.task.TaskRepository;
+import com.davidvignon.todoc.ui.utils.MainThreadExecutor;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.Executor;
 
@@ -24,16 +24,24 @@ public class AddTaskViewModel extends ViewModel {
     public ProjectRepository projectRepository;
     private final Application application;
 
+    private final MainThreadExecutor mainThreadExecutor;
     private final Executor ioExecutor;
 
 
     private final MediatorLiveData<AddTaskViewState> addTaskViewStateMediatorLiveData = new MediatorLiveData<>();
     private final MutableLiveData<String> nameErrorMutableLiveData = new MutableLiveData<>();
 
-    public AddTaskViewModel(Application application, TaskRepository taskRepository, ProjectRepository projectRepository, Executor ioExecutor) {
+    public AddTaskViewModel(
+            Application application,
+            TaskRepository taskRepository,
+            ProjectRepository projectRepository,
+            MainThreadExecutor mainThreadExecutor,
+            Executor ioExecutor
+    ) {
         this.application = application;
         this.taskRepository = taskRepository;
         this.projectRepository = projectRepository;
+        this.mainThreadExecutor = mainThreadExecutor;
         this.ioExecutor = ioExecutor;
 
 
@@ -56,10 +64,10 @@ public class AddTaskViewModel extends ViewModel {
     private void combine(List<Project> projects, String nameError) {
 
         addTaskViewStateMediatorLiveData.setValue(
-            new AddTaskViewState(
-                projects,
-                nameError
-            )
+                new AddTaskViewState(
+                        projects,
+                        nameError
+                )
         );
     }
 
@@ -68,25 +76,27 @@ public class AddTaskViewModel extends ViewModel {
     }
 
     public void onAddButtonClicked(
-        long projectId,
-        @NonNull String name
+            long projectId,
+            @NonNull String name
     ) {
 
         ioExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                LocalDateTime creationTimestamp = LocalDateTime.now();
-
                 String trimmed = name.trim();
 
                 if (!trimmed.isEmpty()) {
                     taskRepository.addTask(
-                        projectId,
-                        name,
-                        creationTimestamp.toString()
+                            projectId,
+                            name
                     );
                 } else {
-                    nameErrorMutableLiveData.setValue(application.getString(R.string.empty_name));//todo Nino "can't invoke setValue on a background Thread"
+                    mainThreadExecutor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            nameErrorMutableLiveData.setValue(application.getString(R.string.empty_name));
+                        }
+                    });
                 }
             }
         });

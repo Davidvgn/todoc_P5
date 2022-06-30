@@ -10,31 +10,28 @@ import com.davidvignon.todoc.data.project.Project;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Entity (
-    tableName = "task",foreignKeys = @ForeignKey(
-    entity = Project.class,
-    parentColumns = "projectId",
-    childColumns = "projectId")
+@Entity(
+        tableName = "task",
+        foreignKeys = @ForeignKey(
+                entity = Project.class,
+                parentColumns = "projectId",
+                childColumns = "projectId"
+        )
 )
 public class Task {
 
     @PrimaryKey(autoGenerate = true)
     private final long id;
 
-    @NonNull
     private final long projectId;
 
     @NonNull
     private final String taskDescription;
-    
-    private String creationTimestamp = LocalDateTime.now().toString();
 
-    public Task(long id, @NonNull Long projectId,@NonNull String taskDescription, String creationTimestamp) {
+    public Task(long id, long projectId, @NonNull String taskDescription) {
         this.id = id;
         this.projectId = projectId;
         this.taskDescription = taskDescription;
-        this.creationTimestamp = creationTimestamp;
-
     }
 
     public long getId() {
@@ -50,33 +47,28 @@ public class Task {
         return taskDescription;
     }
 
-    public String getCreationTimestamp() {
-        return creationTimestamp;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
         return id == task.id &&
-            projectId == task.projectId &&
-            taskDescription.equals(task.taskDescription) &&
-            creationTimestamp.equals(task.creationTimestamp);
+                projectId == task.projectId &&
+                taskDescription.equals(task.taskDescription);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, projectId, taskDescription, creationTimestamp);
+        return Objects.hash(id, projectId, taskDescription);
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Task{" +
-            "id=" + id +
-            ", projectId=" + projectId +
-            ", taskDescription='" + taskDescription + '\'' +
-            ", creationTimeStamp ='" + creationTimestamp + '\'' +
-            '}';
+                "id=" + id +
+                ", projectId=" + projectId +
+                ", taskDescription='" + taskDescription + '\'' +
+                '}';
     }
 }

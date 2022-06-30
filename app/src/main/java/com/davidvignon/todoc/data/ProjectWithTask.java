@@ -21,8 +21,6 @@ public class ProjectWithTask {
         parentColumn = "projectId",
         entityColumn = "projectId"
     )
-
-
     private final List<Task> task;
 
     public ProjectWithTask(@NonNull Project project, @NonNull List<Task> task) {

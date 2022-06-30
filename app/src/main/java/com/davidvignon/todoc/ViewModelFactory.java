@@ -10,6 +10,7 @@ import com.davidvignon.todoc.data.project.ProjectRepository;
 import com.davidvignon.todoc.data.task.TaskRepository;
 import com.davidvignon.todoc.ui.add.AddTaskViewModel;
 import com.davidvignon.todoc.ui.tasks.TasksListViewModel;
+import com.davidvignon.todoc.ui.utils.MainThreadExecutor;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -18,9 +19,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
 
     private static ViewModelFactory factory;
 
+    private final MainThreadExecutor mainThreadExecutor = new MainThreadExecutor();
     private final Executor ioExecutor = Executors.newFixedThreadPool(4);
-    //todo Nino pourquoi 4 Threads?
-
 
     @NonNull
     private final TaskRepository taskRepository;
@@ -58,6 +58,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
                 MainApplication.getInstance(),
                 taskRepository,
                 projectRepository,
+                mainThreadExecutor,
                 ioExecutor
 
             );

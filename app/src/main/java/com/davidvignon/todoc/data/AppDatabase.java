@@ -21,8 +21,13 @@ import java.time.LocalDateTime;
 import java.util.concurrent.Executor;
 
 @Database(
-    entities = {Task.class,
-        Project.class}, version = 1, exportSchema = false)
+        entities = {
+                Task.class,
+                Project.class
+        },
+        version = 1,
+        exportSchema = false
+)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DATABASE_NAME = "app_database";
@@ -30,8 +35,8 @@ public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase sInstance;
 
     public static AppDatabase getInstance(
-        @NonNull Application application,
-        @NonNull Executor ioExecutor
+            @NonNull Application application,
+            @NonNull Executor ioExecutor
     ) {
         if (sInstance == null) {
             synchronized (AppDatabase.class) {
@@ -44,13 +49,13 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     private static AppDatabase create(
-        @NonNull Application application,
-        @NonNull Executor ioExecutor
+            @NonNull Application application,
+            @NonNull Executor ioExecutor
     ) {
         Builder<AppDatabase> builder = Room.databaseBuilder(
-            application,
-            AppDatabase.class,
-            DATABASE_NAME
+                application,
+                AppDatabase.class,
+                DATABASE_NAME
         );
 
         builder.addCallback(new Callback() {
@@ -68,9 +73,9 @@ public abstract class AppDatabase extends RoomDatabase {
                     ioExecutor.execute(() -> {
                         TaskDao taskDao = AppDatabase.getInstance(application, ioExecutor).getTaskDao();
 
-                        taskDao.insert(new Task(1, 1L, application.getString(R.string.dishes), LocalDateTime.now().toString()));
-                        taskDao.insert(new Task(2, 2L, application.getString(R.string.mop), LocalDateTime.now().toString()));
-                        taskDao.insert(new Task(3, 3L, application.getString(R.string.iron), LocalDateTime.now().toString()));
+                        taskDao.insert(new Task(1, 1L, application.getString(R.string.dishes)));
+                        taskDao.insert(new Task(2, 2L, application.getString(R.string.mop)));
+                        taskDao.insert(new Task(3, 3L, application.getString(R.string.iron)));
                     });
                 }
             }

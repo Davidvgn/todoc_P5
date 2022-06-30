@@ -27,13 +27,12 @@ public class TaskRepository {
     }
 
     @WorkerThread
-    public void addTask(long projectId, String name, String creationTimestamp) {
+    public void addTask(long projectId, String name) {
         taskDao.insert(
                 new Task(
                         0, // 0 to tell autoincrement to work
                         projectId,
-                        name,
-                        creationTimestamp
+                        name
                 )
         );
     }

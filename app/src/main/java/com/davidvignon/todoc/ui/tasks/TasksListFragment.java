@@ -65,8 +65,6 @@ public class TasksListFragment extends Fragment {
             @Override
             public void onChanged(List<TasksViewStateItem> tasksViewStateItems) {
                 adapter.submitList(tasksViewStateItems);
-//                SortingType sortingType = SortingType.NONE;
-
             }
         });
     }

@@ -14,6 +14,7 @@ import com.davidvignon.todoc.data.project.Project;
 import com.davidvignon.todoc.data.project.ProjectRepository;
 import com.davidvignon.todoc.data.task.TaskRepository;
 import com.davidvignon.todoc.ui.utils.MainThreadExecutor;
+import com.davidvignon.todoc.utils.SingleLiveEvent;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,6 +32,7 @@ public class AddTaskViewModel extends ViewModel {
 
     private final MediatorLiveData<AddTaskViewState> addTaskViewStateMediatorLiveData = new MediatorLiveData<>();
     private final MutableLiveData<String> nameErrorMutableLiveData = new MutableLiveData<>();
+    public SingleLiveEvent<Boolean> isCancelled = new SingleLiveEvent<>();
 
     public AddTaskViewModel(
             Application application,
@@ -91,6 +93,7 @@ public class AddTaskViewModel extends ViewModel {
                             projectId,
                             name
                     );
+                    isCancelled.postValue(true);
                 } else {
                     mainThreadExecutor.execute(new Runnable() {
                         @Override

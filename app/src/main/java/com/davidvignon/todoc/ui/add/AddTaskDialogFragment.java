@@ -59,6 +59,12 @@ public class AddTaskDialogFragment extends DialogFragment {
                     dialogSpinner.getSelectedItemId() + 1,
                     dialogEditText.getText().toString()
                 );
+                viewModel.isCancelled.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+                    @Override
+                    public void onChanged(Boolean aBoolean) {
+                        dismiss();
+                    }
+                });
             }
         });
 

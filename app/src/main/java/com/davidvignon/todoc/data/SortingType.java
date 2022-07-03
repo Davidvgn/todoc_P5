@@ -17,8 +17,4 @@ public enum SortingType {
      * First created first
      */
     OLD_FIRST,
-    /**
-     * No sort
-     */
-    NONE
 }

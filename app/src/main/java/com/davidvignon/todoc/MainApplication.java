@@ -1,11 +1,6 @@
 package com.davidvignon.todoc;
 
 import android.app.Application;
-//todo david faire le tri par time
-//todo david warning
-//todo david test unit
-//todo david test instru
-//todo david gérer les nullable et nonnull
 
 public class MainApplication extends Application {
 

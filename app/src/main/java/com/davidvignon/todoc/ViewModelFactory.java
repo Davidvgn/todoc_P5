@@ -60,7 +60,6 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
                 projectRepository,
                 mainThreadExecutor,
                 ioExecutor
-
             );
         }
         throw new IllegalArgumentException("Unknown ViewModel class");

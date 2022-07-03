@@ -9,8 +9,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.davidvignon.todoc.data.ProjectWithTask;
 import com.davidvignon.todoc.data.SortingType;
-import com.davidvignon.todoc.data.project.Project;
-import com.davidvignon.todoc.data.project.ProjectRepository;
 import com.davidvignon.todoc.data.task.Task;
 import com.davidvignon.todoc.data.task.TaskRepository;
 import com.davidvignon.todoc.utils.SingleLiveEvent;
@@ -29,7 +27,6 @@ public class TasksListViewModel extends ViewModel {
 
     private final MediatorLiveData<List<TasksViewStateItem>> mediatorLiveData = new MediatorLiveData<>();
     private final SingleLiveEvent<SortingType> sortingListMediatorLiveData = new SingleLiveEvent<>();
-
 
     public TasksListViewModel(TaskRepository taskRepository, Executor ioExecutor) {
         this.taskRepository = taskRepository;
@@ -61,6 +58,7 @@ public class TasksListViewModel extends ViewModel {
             return;
         }
 
+
         List<TasksViewStateItem> taskViewStates = new ArrayList<>();
 
         if (sortingType == SortingType.ALPHABETICAL) {
@@ -77,10 +75,6 @@ public class TasksListViewModel extends ViewModel {
                     return o2.getProject().getName().compareToIgnoreCase(o1.getProject().getName());
                 }
             });
-        }else if (sortingType == SortingType.OLD_FIRST) {
-
-        }else if (sortingType == SortingType.RECENT_FIRST) {
-
         }
 
         for (ProjectWithTask projectWithTask : tasks) {
@@ -89,12 +83,22 @@ public class TasksListViewModel extends ViewModel {
             }
         }
 
-        Collections.sort(taskViewStates, new Comparator<TasksViewStateItem>() {
-            @Override
-            public int compare(TasksViewStateItem o1, TasksViewStateItem o2) {
-                return Long.compare(((TasksViewStateItem.Task) o1).getTaskId(), ((TasksViewStateItem.Task) o2).getTaskId());
-            }
-        });
+        if ((sortingType == null) ||
+            (sortingType == SortingType.OLD_FIRST)) {
+            Collections.sort(taskViewStates, new Comparator<TasksViewStateItem>() {
+                @Override
+                public int compare(TasksViewStateItem o1, TasksViewStateItem o2) {
+                    return Long.compare(((TasksViewStateItem.Task) o1).getTaskId(), ((TasksViewStateItem.Task) o2).getTaskId());
+                }
+            });
+        } else if (sortingType == SortingType.RECENT_FIRST) {
+            Collections.sort(taskViewStates, new Comparator<TasksViewStateItem>() {
+                @Override
+                public int compare(TasksViewStateItem o1, TasksViewStateItem o2) {
+                    return Long.compare(((TasksViewStateItem.Task) o2).getTaskId(), ((TasksViewStateItem.Task) o1).getTaskId());
+                }
+            });
+        }
 
         if (taskViewStates.isEmpty()) {
             taskViewStates.add(new TasksViewStateItem.EmptyState());
@@ -125,3 +129,4 @@ public class TasksListViewModel extends ViewModel {
         sortingListMediatorLiveData.setValue(sortingType);
     }
 }
+

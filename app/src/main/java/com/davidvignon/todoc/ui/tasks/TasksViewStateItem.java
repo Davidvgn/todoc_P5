@@ -70,18 +70,23 @@ public abstract class TasksViewStateItem {
             if (o == null || getClass() != o.getClass()) return false;
             Task task = (Task) o;
             return id == task.id &&
-                taskDescription.equals(task.taskDescription);
+                projectName.equals(task.projectName) &&
+                projectColor == task.projectColor &&
+                taskDescription.equals(task.taskDescription)
+                ;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(id, taskDescription);
+            return Objects.hash(id, projectName, projectColor, taskDescription);
         }
 
         @Override
         public String toString() {
             return "Task{" +
                 "id=" + id +
+                ", projectName=" + projectName +
+                ", projectColor=" + projectColor +
                 ", name='" + taskDescription + '\'' +
                 '}';
         }

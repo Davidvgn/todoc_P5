@@ -69,15 +69,6 @@ public abstract class AppDatabase extends RoomDatabase {
                     projectDao.insert(new Project(2L, application.getString(R.string.lucidia_project), 0xFFB4CDBA));
                     projectDao.insert(new Project(3L, application.getString(R.string.circus_project), 0xFFA3CED2));
                 });
-                if (BuildConfig.DEBUG) {
-                    ioExecutor.execute(() -> {
-                        TaskDao taskDao = AppDatabase.getInstance(application, ioExecutor).getTaskDao();
-
-                        taskDao.insert(new Task(1, 1L, application.getString(R.string.dishes)));
-                        taskDao.insert(new Task(2, 2L, application.getString(R.string.mop)));
-                        taskDao.insert(new Task(3, 3L, application.getString(R.string.iron)));
-                    });
-                }
             }
         });
         return builder.build();

@@ -1,11 +1,10 @@
-package com.davidvignon.todoc.data;
+package com.davidvignon.todoc.data.project;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.davidvignon.todoc.data.ProjectWithTask;
 import com.davidvignon.todoc.data.dao.ProjectDao;
-import com.davidvignon.todoc.data.project.Project;
-import com.davidvignon.todoc.data.project.ProjectRepository;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +21,7 @@ public class ProjectRepositoryTest {
 
     private final ProjectDao projectDao = Mockito.mock(ProjectDao.class);
 
-    ProjectRepository projectRepository;
+    private ProjectRepository projectRepository;
 
     @Before
     public void setup() {
@@ -32,8 +31,8 @@ public class ProjectRepositoryTest {
     @Test
     public void test_getAllProjects() {
         // Given
-        LiveData<List<Project>> projects = Mockito.spy(new
-            MutableLiveData<>());
+        @SuppressWarnings("unchecked") // Cannot generify mock
+        LiveData<List<Project>> projects = Mockito.mock(LiveData.class);
         Mockito.doReturn(projects).when(projectDao).getAllProjects();
 
         // When
@@ -43,6 +42,5 @@ public class ProjectRepositoryTest {
         assertEquals(projects, projectList);
         Mockito.verify(projectDao).getAllProjects();
         Mockito.verifyNoMoreInteractions(projectDao);
-
     }
 }

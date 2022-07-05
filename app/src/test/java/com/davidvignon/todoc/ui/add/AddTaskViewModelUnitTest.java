@@ -1,4 +1,9 @@
-package com.davidvignon.todoc.ui;
+package com.davidvignon.todoc.ui.add;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 import android.app.Application;
 
@@ -8,8 +13,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.davidvignon.todoc.data.project.Project;
 import com.davidvignon.todoc.data.project.ProjectRepository;
 import com.davidvignon.todoc.data.task.TaskRepository;
-import com.davidvignon.todoc.ui.add.AddTaskViewModel;
-import com.davidvignon.todoc.ui.add.AddTaskViewState;
 import com.davidvignon.todoc.ui.utils.MainThreadExecutor;
 import com.davidvignon.todoc.utils.LiveDataTestUtils;
 import com.davidvignon.todoc.utils.TestExecutor;
@@ -24,14 +27,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -61,7 +56,7 @@ public class AddTaskViewModelUnitTest {
     }
 
     @Test
-    public void nominalCase(){
+    public void nominalCase() {
         // Given
         String name = null;
 
@@ -69,7 +64,7 @@ public class AddTaskViewModelUnitTest {
         AddTaskViewState addTaskViewState = LiveDataTestUtils.getValueForTesting(viewModel.getAddTaskViewStateLiveData());
 
         // Then
-        assertEquals(new AddTaskViewState(getDefaultProjects(),name), addTaskViewState);
+        assertEquals(new AddTaskViewState(getDefaultProjects(), name), addTaskViewState);
         Mockito.verify(ioExecutor, Mockito.never()).execute(any());
     }
 

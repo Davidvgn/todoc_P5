@@ -1,4 +1,8 @@
-package com.davidvignon.todoc.ui;
+package com.davidvignon.todoc.ui.tasks;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 
 import androidx.annotation.NonNull;
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
@@ -9,16 +13,13 @@ import com.davidvignon.todoc.data.SortingType;
 import com.davidvignon.todoc.data.project.Project;
 import com.davidvignon.todoc.data.task.Task;
 import com.davidvignon.todoc.data.task.TaskRepository;
-import com.davidvignon.todoc.ui.tasks.TasksViewStateItem;
 import com.davidvignon.todoc.utils.LiveDataTestUtils;
 import com.davidvignon.todoc.utils.TestExecutor;
-import com.davidvignon.todoc.ui.tasks.TasksListViewModel;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -26,10 +27,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executor;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TasksViewModelUnitTest {
@@ -60,22 +57,10 @@ public class TasksViewModelUnitTest {
     }
 
     @Test
-    public void initialCase() {
-        // Given
-        projectWithTaskMutableLiveData.setValue(new ArrayList<>());
-
+    public void nominalCase() {
         // When
         List<TasksViewStateItem> tasksViewStateItems = LiveDataTestUtils.getValueForTesting(viewModel.getTasksViewStateItemsLiveData());
 
-        // Then
-        assertEquals(Collections.singletonList(new TasksViewStateItem.EmptyState()), tasksViewStateItems);
-
-    }
-
-    @Test
-    public void nominalCase() {
-        // Given
-        List<TasksViewStateItem> tasksViewStateItems = LiveDataTestUtils.getValueForTesting(viewModel.getTasksViewStateItemsLiveData());
         // Then
         assertEquals(getDefaultTaskViewStates(), tasksViewStateItems);
 
@@ -85,20 +70,7 @@ public class TasksViewModelUnitTest {
     }
 
     @Test
-    public void test_deleteTask() {
-        // Given
-        long taskId = 42;
-
-        // When
-        viewModel.onDeleteViewModelClicked(42);
-
-        // Then
-        Mockito.verify(taskRepository).deleteTask(42);
-        Mockito.verifyNoMoreInteractions(taskRepository);
-    }
-
-    @Test
-    public void noProject() {
+    public void initialCase() {
         // Given
         projectWithTaskMutableLiveData.setValue(new ArrayList<>());
 
@@ -107,20 +79,24 @@ public class TasksViewModelUnitTest {
 
         // Then
         assertEquals(Collections.singletonList(new TasksViewStateItem.EmptyState()), tasksViewStateItems);
-
     }
 
     @Test
-    public void noSorting() {
+    public void test_deleteTask() {
+        // Given
+        long taskId = 42;
+
         // When
-        List<TasksViewStateItem> tasksViewStateItems = LiveDataTestUtils.getValueForTesting(viewModel.getTasksViewStateItemsLiveData());
+        viewModel.onDeleteViewModelClicked(taskId);
 
         // Then
-        assertEquals(getDefaultTaskViewStates(), tasksViewStateItems);
+        Mockito.verify(taskRepository).deleteTask(taskId);
+        Mockito.verifyNoMoreInteractions(taskRepository);
     }
 
     @Test
     public void sort_project_alphabetical() {
+        // Given
         viewModel.sortList(SortingType.ALPHABETICAL);
 
         // When
@@ -128,7 +104,6 @@ public class TasksViewModelUnitTest {
 
         // Then
         assertEquals(getDefaultTaskViewStates(), tasksViewStateItems);
-
     }
 
     @Test
@@ -152,6 +127,7 @@ public class TasksViewModelUnitTest {
         List<TasksViewStateItem> tasksViewStateItems = LiveDataTestUtils.getValueForTesting(viewModel.getTasksViewStateItemsLiveData());
 
         // Then
+        // TODO DAVID No accident in UT : better more words than errors !
         assertEquals(getTasksForAlphabeticalInvertedSorting(), tasksViewStateItems);
     }
 

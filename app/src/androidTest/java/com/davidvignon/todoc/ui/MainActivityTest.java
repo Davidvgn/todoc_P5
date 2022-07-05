@@ -1,19 +1,19 @@
-package com.davidvignon.todoc;
+package com.davidvignon.todoc.ui;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
-import com.davidvignon.todoc.ui.MainActivity;
+import com.davidvignon.todoc.R;
 import com.davidvignon.todoc.utils.DeleteViewAction;
 import com.davidvignon.todoc.utils.RecyclerViewMatcher;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -34,7 +34,7 @@ import static org.hamcrest.Matchers.not;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class TodocAndroidTest {
+public class MainActivityTest {
     public MainActivity mainActivity;
 
     //The 3 tasks create in AppDatabase must be present.
@@ -45,26 +45,21 @@ public class TodocAndroidTest {
         activityScenario.onActivity(activity -> mainActivity = activity);
     }
 
-
     @Test
     public void open_dialog_no_description_added_show_error() {
 
         onView(withId(R.id.main_fab_add)).perform(click());
 
-        onView(allOf(withId(R.id.task_Rv),
-        isDisplayed()));
+        onView(allOf(withId(R.id.task_Rv), isDisplayed()));
 
         onView(withHint("Ajouter"))
             .perform(click());
 
         pressBack();
 
-        onView(isRoot())
-            .perform(waitFor(1000));
-        onView(allOf(withId(R.id.task_Rv),
-
-            isDisplayed()))
-            .check(withItemCount(3));
+        onView(isRoot()).perform(waitFor(1000));
+        onView(allOf(withId(R.id.task_Rv), isDisplayed())).check(withItemCount(1));
+        // TODO DAVID VERIFY EMPTY STATE
     }
 
     @Test
@@ -81,27 +76,64 @@ public class TodocAndroidTest {
 
         onView(allOf(withId(R.id.task_Rv),
             isDisplayed()))
-            .check(withItemCount(4));
+            .check(withItemCount(1));
+    }
+
+    @Test
+    public void add2Tasks() {
+        onView(withId(R.id.main_fab_add)).perform(click());
+        onView(withId(R.id.dialog_et_task_name))
+            .perform(click(),
+                replaceText("Something to do"));
+        onView(withId(R.id.dialog_project_spinner))
+            .perform(click());
+        onView(withText("Projet Tartampion")).inRoot(isPlatformPopup()).perform(click());
+        onView(withHint("Ajouter"))
+            .perform(click());
+
+        onView(isRoot()).perform(waitFor(1000));
+
+        onView(withId(R.id.main_fab_add)).perform(click());
+        onView(withId(R.id.dialog_et_task_name))
+            .perform(click(),
+                replaceText("Something else to do"));
+        onView(withId(R.id.dialog_project_spinner))
+            .perform(click());
+        onView(withText("Projet Tartampion")).inRoot(isPlatformPopup()).perform(click());
+        onView(withHint("Ajouter"))
+            .perform(click());
+
+        onView(isRoot()).perform(waitFor(1000));
+
+        onView(allOf(withId(R.id.task_Rv),
+            isDisplayed()))
+            .check(withItemCount(2));
     }
 
     @Test
     public void deleteTask() {
 
+        // TODO DAVID ADD TASK BEFORE
+
         onView(allOf(withId(R.id.task_Rv),
             isDisplayed()))
-            .perform(RecyclerViewActions
-                .actionOnItemAtPosition(2, new DeleteViewAction()));
+            .perform(RecyclerViewActions.actionOnItemAtPosition(0, new DeleteViewAction()));
         onView(isRoot())
             .perform(waitFor(1000));
 
         onView(allOf(withId(R.id.task_Rv),
             isDisplayed()))
-            .check(withItemCount(3));
+            .check(withItemCount(0));
     }
+
+    // TODO DAVID ADD NEW TEST : ADD 2 TASKS THEN DELETE ONE AND CHECK ONE IS STILL HERE
 
     @Test
     public void sortAlphabetically() {
 
+        // TODO DAVID ADD TASK BEFORE
+
+        // TODO DAVID CLICK ON MENU
         onView(withText(R.string.sort_alphabetical))
             .inRoot(withDecorView(not(is(mainActivity.getWindow().getDecorView()))))
             .check(matches(isDisplayed()));
@@ -111,14 +143,17 @@ public class TodocAndroidTest {
 
     }
 
+    @Ignore
     @Test
     public void sortAlphabeticallyInverted() {
     }
 
+    @Ignore
     @Test
     public void sortRecentFirst() {
     }
 
+    @Ignore
     @Test
     public void sortOlderFirst() {
     }

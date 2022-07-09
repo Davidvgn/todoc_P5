@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
-import static org.junit.Assert.fail;
-
 public class LiveDataTestUtils {
 
     public static <T> T getValueForTesting(@NonNull final LiveData<T> liveData) {

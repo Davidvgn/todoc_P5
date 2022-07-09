@@ -16,7 +16,6 @@ import com.davidvignon.todoc.data.task.TaskRepository;
 import com.davidvignon.todoc.ui.utils.MainThreadExecutor;
 import com.davidvignon.todoc.utils.SingleLiveEvent;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.Executor;
 

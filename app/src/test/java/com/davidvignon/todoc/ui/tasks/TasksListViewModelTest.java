@@ -1,4 +1,4 @@
-package com.davidvignon.todoc.ui;
+package com.davidvignon.todoc.ui.tasks;
 
 import androidx.annotation.NonNull;
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
@@ -9,16 +9,13 @@ import com.davidvignon.todoc.data.SortingType;
 import com.davidvignon.todoc.data.project.Project;
 import com.davidvignon.todoc.data.task.Task;
 import com.davidvignon.todoc.data.task.TaskRepository;
-import com.davidvignon.todoc.ui.tasks.TasksViewStateItem;
 import com.davidvignon.todoc.utils.LiveDataTestUtils;
 import com.davidvignon.todoc.utils.TestExecutor;
-import com.davidvignon.todoc.ui.tasks.TasksListViewModel;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -32,7 +29,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TasksViewModelUnitTest {
+public class TasksListViewModelTest {
 
     private static final int DEFAULT_PROJECT_COUNT = 3;
     private static final String DEFAULT_PROJECT_NAME = "projectName";
@@ -60,6 +57,18 @@ public class TasksViewModelUnitTest {
     }
 
     @Test
+    public void nominalCase() {
+        // When
+        List<TasksViewStateItem> tasksViewStateItems = LiveDataTestUtils.getValueForTesting(viewModel.getTasksViewStateItemsLiveData());
+
+        // Then
+        assertEquals(getDefaultTaskViewStates(), tasksViewStateItems);
+
+        Mockito.verify(ioExecutor, Mockito.never()).execute(any());
+        Mockito.verifyNoMoreInteractions(taskRepository, ioExecutor);
+
+    }
+    @Test
     public void initialCase() {
         // Given
         projectWithTaskMutableLiveData.setValue(new ArrayList<>());
@@ -73,62 +82,28 @@ public class TasksViewModelUnitTest {
     }
 
     @Test
-    public void nominalCase() {
-        // Given
-        List<TasksViewStateItem> tasksViewStateItems = LiveDataTestUtils.getValueForTesting(viewModel.getTasksViewStateItemsLiveData());
-        // Then
-        assertEquals(getDefaultTaskViewStates(), tasksViewStateItems);
-
-        Mockito.verify(ioExecutor, Mockito.never()).execute(any());
-        Mockito.verifyNoMoreInteractions(taskRepository, ioExecutor);
-
-    }
-
-    @Test
     public void test_deleteTask() {
         // Given
         long taskId = 42;
 
         // When
-        viewModel.onDeleteViewModelClicked(42);
+        viewModel.onDeleteViewModelClicked(taskId);
 
         // Then
-        Mockito.verify(taskRepository).deleteTask(42);
+        Mockito.verify(taskRepository).deleteTask(taskId);
         Mockito.verifyNoMoreInteractions(taskRepository);
     }
 
     @Test
-    public void noProject() {
-        // Given
-        projectWithTaskMutableLiveData.setValue(new ArrayList<>());
-
-        // When
-        List<TasksViewStateItem> tasksViewStateItems = LiveDataTestUtils.getValueForTesting(viewModel.getTasksViewStateItemsLiveData());
-
-        // Then
-        assertEquals(Collections.singletonList(new TasksViewStateItem.EmptyState()), tasksViewStateItems);
-
-    }
-
-    @Test
-    public void noSorting() {
-        // When
-        List<TasksViewStateItem> tasksViewStateItems = LiveDataTestUtils.getValueForTesting(viewModel.getTasksViewStateItemsLiveData());
-
-        // Then
-        assertEquals(getDefaultTaskViewStates(), tasksViewStateItems);
-    }
-
-    @Test
     public void sort_project_alphabetical() {
+        // Given
         viewModel.sortList(SortingType.ALPHABETICAL);
 
         // When
         List<TasksViewStateItem> tasksViewStateItems = LiveDataTestUtils.getValueForTesting(viewModel.getTasksViewStateItemsLiveData());
 
         // Then
-        assertEquals(getDefaultTaskViewStates(), tasksViewStateItems);
-
+        assertEquals(getTasksInAlphabeticalSorting(), tasksViewStateItems);
     }
 
     @Test
@@ -140,7 +115,7 @@ public class TasksViewModelUnitTest {
         List<TasksViewStateItem> tasksViewStateItems = LiveDataTestUtils.getValueForTesting(viewModel.getTasksViewStateItemsLiveData());
 
         // Then
-        assertEquals(getTasksForAlphabeticalInvertedSorting(), tasksViewStateItems);
+        assertEquals(getTasksInAlphabeticalInvertedSorting(), tasksViewStateItems);
     }
 
     @Test
@@ -152,7 +127,7 @@ public class TasksViewModelUnitTest {
         List<TasksViewStateItem> tasksViewStateItems = LiveDataTestUtils.getValueForTesting(viewModel.getTasksViewStateItemsLiveData());
 
         // Then
-        assertEquals(getTasksForAlphabeticalInvertedSorting(), tasksViewStateItems);
+        assertEquals(getTasksRecentFirst(), tasksViewStateItems);
     }
 
     @Test
@@ -164,7 +139,7 @@ public class TasksViewModelUnitTest {
         List<TasksViewStateItem> tasksViewStateItems = LiveDataTestUtils.getValueForTesting(viewModel.getTasksViewStateItemsLiveData());
 
         // Then
-        assertEquals(getDefaultTaskViewStates(), tasksViewStateItems);
+        assertEquals(getTasksOlderFirst(), tasksViewStateItems);
     }
 
     // region IN
@@ -222,26 +197,46 @@ public class TasksViewModelUnitTest {
     }
 
     @NonNull
-    private List<TasksViewStateItem> getTasksForAlphabeticalInvertedSorting(){
-        List<TasksViewStateItem> tasksViewStateItems = new ArrayList<>();
+    private List<TasksViewStateItem.Task> getTasksInAlphabeticalSorting() {
+        List<TasksViewStateItem.Task> tasksViewStateItems = new ArrayList<>();
+        tasksViewStateItems.add(0,new TasksViewStateItem.Task(1,"projectName0",0,"taskDescription1"));
+        tasksViewStateItems.add(1,new TasksViewStateItem.Task(2,"projectName1",1,"taskDescription2"));
+        tasksViewStateItems.add(2,new TasksViewStateItem.Task(3,"projectName2",2,"taskDescription3"));
+        tasksViewStateItems.add(3,new TasksViewStateItem.Task(4,"projectName3",3,"taskDescription4"));
 
-        int taskId = 4;
+        return tasksViewStateItems;
+    }
 
-        for (int i = 0; i <= DEFAULT_TASK_COUNT ; i++) {
-            int taskIdMinusOne = taskId - 1;
+    @NonNull
+    private List<TasksViewStateItem.Task> getTasksInAlphabeticalInvertedSorting(){
+        List<TasksViewStateItem.Task> tasksViewStateItems = new ArrayList<>();
+        tasksViewStateItems.add(0,new TasksViewStateItem.Task(4,"projectName3",3,"taskDescription4"));
+        tasksViewStateItems.add(1,new TasksViewStateItem.Task(3,"projectName2",2,"taskDescription3"));
+        tasksViewStateItems.add(2,new TasksViewStateItem.Task(2,"projectName1",1,"taskDescription2"));
+        tasksViewStateItems.add(3,new TasksViewStateItem.Task(1,"projectName0",0,"taskDescription1"));
 
-            tasksViewStateItems.add(
-                    new TasksViewStateItem.Task(
-                        taskId,
-                        DEFAULT_PROJECT_NAME + taskIdMinusOne,
-                        taskIdMinusOne,
-                        DEFAULT_TASK_DESCRIPTION + taskId
-                    )
-                );
-            taskId--;
+        return tasksViewStateItems;
+    }
 
+    @NonNull
+    private List<TasksViewStateItem.Task> getTasksRecentFirst(){
+        List<TasksViewStateItem.Task> tasksViewStateItems = new ArrayList<>();
+        tasksViewStateItems.add(0,new TasksViewStateItem.Task(4,"projectName3",3,"taskDescription4"));
+        tasksViewStateItems.add(1,new TasksViewStateItem.Task(3,"projectName2",2,"taskDescription3"));
+        tasksViewStateItems.add(2,new TasksViewStateItem.Task(2,"projectName1",1,"taskDescription2"));
+        tasksViewStateItems.add(3,new TasksViewStateItem.Task(1,"projectName0",0,"taskDescription1"));
 
-        }
+        return tasksViewStateItems;
+    }
+
+    @NonNull
+    private List<TasksViewStateItem.Task> getTasksOlderFirst(){
+        List<TasksViewStateItem.Task> tasksViewStateItems = new ArrayList<>();
+        tasksViewStateItems.add(0,new TasksViewStateItem.Task(1,"projectName0",0,"taskDescription1"));
+        tasksViewStateItems.add(1,new TasksViewStateItem.Task(2,"projectName1",1,"taskDescription2"));
+        tasksViewStateItems.add(2,new TasksViewStateItem.Task(3,"projectName2",2,"taskDescription3"));
+        tasksViewStateItems.add(3,new TasksViewStateItem.Task(4,"projectName3",3,"taskDescription4"));
+
         return tasksViewStateItems;
     }
     // endregion OUT

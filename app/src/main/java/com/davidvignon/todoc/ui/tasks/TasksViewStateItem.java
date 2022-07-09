@@ -4,7 +4,6 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 public abstract class TasksViewStateItem {

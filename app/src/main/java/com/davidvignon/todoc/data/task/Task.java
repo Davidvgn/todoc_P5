@@ -7,7 +7,6 @@ import androidx.room.PrimaryKey;
 
 import com.davidvignon.todoc.data.project.Project;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity(

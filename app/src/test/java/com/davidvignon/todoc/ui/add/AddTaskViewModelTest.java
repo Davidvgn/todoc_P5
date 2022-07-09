@@ -1,4 +1,4 @@
-package com.davidvignon.todoc.ui;
+package com.davidvignon.todoc.ui.add;
 
 import android.app.Application;
 
@@ -8,8 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.davidvignon.todoc.data.project.Project;
 import com.davidvignon.todoc.data.project.ProjectRepository;
 import com.davidvignon.todoc.data.task.TaskRepository;
-import com.davidvignon.todoc.ui.add.AddTaskViewModel;
-import com.davidvignon.todoc.ui.add.AddTaskViewState;
+
 import com.davidvignon.todoc.ui.utils.MainThreadExecutor;
 import com.davidvignon.todoc.utils.LiveDataTestUtils;
 import com.davidvignon.todoc.utils.TestExecutor;
@@ -26,16 +25,14 @@ import java.util.List;
 import java.util.concurrent.Executor;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
+
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class AddTaskViewModelUnitTest {
+public class AddTaskViewModelTest {
 
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();

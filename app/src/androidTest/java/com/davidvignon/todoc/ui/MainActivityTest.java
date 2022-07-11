@@ -1,6 +1,7 @@
 package com.davidvignon.todoc.ui;
 
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.ViewAssertion;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -20,6 +21,7 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.RootMatchers.isPlatformPopup;
+import static androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withHint;
@@ -60,7 +62,12 @@ public class MainActivityTest {
         onView(allOf(withId(R.id.task_Rv),
             isDisplayed()))
             .check(withItemCount(1));
-        //TODO verify EmptyState
+        onView(
+            allOf(
+                withId(R.id.lbl_no_task),
+                isCompletelyDisplayed()
+            )
+        ).check(matches(withText(R.string.no_task)));
     }
 
     @Test

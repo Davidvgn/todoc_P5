@@ -43,8 +43,10 @@ public class ProjectWithTask {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProjectWithTask that = (ProjectWithTask) o;
-        return project.equals(that.project) &&
-            task.equals(that.task);
+//        return project.equals(that.project) &&
+//            task.equals(that.task);
+        return Objects.equals(project, that.project) &&
+            Objects.equals(task, that.task);
     }
 
     @Override

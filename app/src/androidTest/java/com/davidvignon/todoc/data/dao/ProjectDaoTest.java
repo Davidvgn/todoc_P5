@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 public class ProjectDaoTest {
@@ -39,7 +40,7 @@ public class ProjectDaoTest {
     private ProjectDao projectDao;
 
     @Rule
-    public InstantTaskExecutor instantTaskExecutor = new InstantTaskExecutor();
+    public InstantTaskExecutorRule instantTaskExecutor = new InstantTaskExecutorRule();
 
     @Before
     public void createDb() {
@@ -92,6 +93,23 @@ public class ProjectDaoTest {
             ),
             results
         );
+    }
+    @Test(expected = SQLiteException.class)
+    public void insert_should_fail_with_duplicate_id() {
+        // Given
+        Project project = new Project(EXPECTED_PROJECT_ID_1, EXPECTED_PROJECT_NAME_1, EXPECTED_PROJECT_COLOR_1);
+
+        // When
+        projectDao.insert(project);
+        projectDao.insert(project);
+    }
+    @Test
+    public void getAllProjects_should_return_empty() {
+        // When
+        List<Project> results = LiveDataTestUtils.getValueForTesting(projectDao.getAllProjects());
+
+        // Then
+        assertTrue(results.isEmpty());
     }
 }
 

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
+@SuppressWarnings("ALL")
 public class LiveDataTestUtils {
 
     public static <T> T getValueForTesting(@NonNull final LiveData<T> liveData) {

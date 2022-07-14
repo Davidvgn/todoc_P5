@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 
 import java.util.Objects;
 
+@SuppressWarnings("ALL")
 public abstract class TasksViewStateItem {
 
     public enum Type {
@@ -80,6 +81,7 @@ public abstract class TasksViewStateItem {
             return Objects.hash(id, projectName, projectColor, taskDescription);
         }
 
+        @NonNull
         @Override
         public String toString() {
             return "Task{" +

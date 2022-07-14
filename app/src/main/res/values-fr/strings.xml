@@ -10,14 +10,12 @@
     <string name="no_task">Tu n\'as aucune tâche à traiter</string>
     <string name="add_task">Ajouter une tâche</string>
     <string name="task_name_hint">Nom de la tâche</string>
+    <string name="dustbin_icon">Icône d\'une poubelle</string>
+
 
     <string name="tartampion_project">Projet Tartampion</string>
     <string name="lucidia_project">Projet Lucidia</string>
     <string name="circus_project">Projet Circus</string>
-
-    <string name="dishes">Faire la vaisselle</string>
-    <string name="iron">Repassage</string>
-    <string name="mop">Passer la serpillère</string>
 
     <string name="empty_name">Champ description vide</string>
 

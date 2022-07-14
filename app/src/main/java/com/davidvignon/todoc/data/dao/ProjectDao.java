@@ -9,6 +9,7 @@ import com.davidvignon.todoc.data.project.Project;
 
 import java.util.List;
 
+@SuppressWarnings("ALL")
 @Dao
 public interface ProjectDao {
 

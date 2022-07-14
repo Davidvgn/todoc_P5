@@ -13,6 +13,7 @@ import com.davidvignon.todoc.databinding.ActivityMainBinding;
 import com.davidvignon.todoc.ui.add.AddTaskDialogFragment;
 import com.davidvignon.todoc.ui.tasks.TasksListFragment;
 
+@SuppressWarnings("ALL")
 public class MainActivity extends AppCompatActivity {
 
     @Override

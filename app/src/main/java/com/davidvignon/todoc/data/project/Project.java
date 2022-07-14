@@ -47,7 +47,7 @@ public class Project {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Project that = (Project) o;
-        return projectId == that.projectId &&
+        return projectId.equals(that.projectId) &&
             color == that.color &&
             name.equals(that.name);
     }

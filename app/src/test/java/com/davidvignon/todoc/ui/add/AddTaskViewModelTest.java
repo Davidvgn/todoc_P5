@@ -31,6 +31,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 
+@SuppressWarnings("ConstantConditions")
 @RunWith(MockitoJUnitRunner.class)
 public class AddTaskViewModelTest {
 

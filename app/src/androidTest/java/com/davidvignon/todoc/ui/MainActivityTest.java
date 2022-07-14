@@ -1,7 +1,6 @@
 package com.davidvignon.todoc.ui;
 
 import androidx.test.core.app.ActivityScenario;
-import androidx.test.espresso.ViewAssertion;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -30,9 +29,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.davidvignon.todoc.utils.RecyclerViewItemCountAssertion.withItemCount;
 import static com.davidvignon.todoc.utils.Waiter.waitFor;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
 
+@SuppressWarnings("unused")
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class MainActivityTest {

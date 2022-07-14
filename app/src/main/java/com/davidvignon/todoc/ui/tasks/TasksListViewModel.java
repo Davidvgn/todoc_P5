@@ -19,8 +19,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Executor;
 
+@SuppressWarnings("ALL")
 public class TasksListViewModel extends ViewModel {
 
+    @NonNull
     private final TaskRepository taskRepository;
     @NonNull
     private final Executor ioExecutor;
@@ -28,7 +30,7 @@ public class TasksListViewModel extends ViewModel {
     private final MediatorLiveData<List<TasksViewStateItem>> mediatorLiveData = new MediatorLiveData<>();
     private final SingleLiveEvent<SortingType> sortingListMediatorLiveData = new SingleLiveEvent<>();
 
-    public TasksListViewModel(TaskRepository taskRepository, Executor ioExecutor) {
+    public TasksListViewModel(@NonNull TaskRepository taskRepository, @NonNull Executor ioExecutor) {
         this.taskRepository = taskRepository;
         this.ioExecutor = ioExecutor;
 

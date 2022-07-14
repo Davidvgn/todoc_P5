@@ -9,14 +9,11 @@
     <string name="no_task">No task to do</string>
     <string name="add_task">Add task</string>
     <string name="task_name_hint">Task name</string>
+    <string name="dustbin_icon">Dustbin icon</string>
 
     <string name="tartampion_project">Tartampion Project</string>
     <string name="lucidia_project">Lucidia Project</string>
     <string name="circus_project">Circus Project</string>
-
-    <string name="dishes">Wash the dishes</string>
-    <string name="iron">Iron clothes</string>
-    <string name="mop">Mop the floor</string>
 
     <string name="empty_name">Name shouldn\'t be empty !</string>
 

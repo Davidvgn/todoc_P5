@@ -5,28 +5,25 @@ import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.davidvignon.todoc.R;
 import com.davidvignon.todoc.databinding.ItemTaskBinding;
 import com.davidvignon.todoc.databinding.TaskEmptyStateItemBinding;
 import com.davidvignon.todoc.ui.OnTaskClickedListener;
 
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("ALL")
 public class TasksListAdapter extends ListAdapter<TasksViewStateItem, RecyclerView.ViewHolder> {
     @NonNull
     private final OnTaskClickedListener listener;
 
 
-    public TasksListAdapter(OnTaskClickedListener listener) {
+    public TasksListAdapter(@NonNull OnTaskClickedListener listener) {
         super(new ListTaskItemCallBack());
         this.listener = listener;
     }

@@ -41,10 +41,10 @@ public class TasksListViewModelTest {
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
-    TaskRepository taskRepository = Mockito.mock(TaskRepository.class);
+    private final TaskRepository taskRepository = Mockito.mock(TaskRepository.class);
     private final Executor ioExecutor = Mockito.spy(new TestExecutor());
 
-    private MutableLiveData<List<ProjectWithTask>> projectWithTaskMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<List<ProjectWithTask>> projectWithTaskMutableLiveData = new MutableLiveData<>();
     private TasksListViewModel viewModel;
 
 

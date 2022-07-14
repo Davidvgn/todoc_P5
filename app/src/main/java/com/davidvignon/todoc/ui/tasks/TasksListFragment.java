@@ -1,5 +1,6 @@
 package com.davidvignon.todoc.ui.tasks;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -22,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+@SuppressWarnings("ALL")
 public class TasksListFragment extends Fragment {
 
     public static TasksListFragment newInstance() {
@@ -76,6 +78,7 @@ public class TasksListFragment extends Fragment {
         binding = null;
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
         switch (item.getItemId()) {

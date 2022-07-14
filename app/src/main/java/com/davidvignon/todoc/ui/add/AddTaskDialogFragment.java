@@ -1,5 +1,6 @@
 package com.davidvignon.todoc.ui.add;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -23,14 +24,16 @@ import com.davidvignon.todoc.ViewModelFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("ALL")
 public class AddTaskDialogFragment extends DialogFragment {
 
     public static DialogFragment newInstance() {
-        AddTaskDialogFragment addTaskDialogFragment = new AddTaskDialogFragment();
-        return addTaskDialogFragment;
+        return new AddTaskDialogFragment();
     }
 
+    @SuppressLint("InflateParams")
     @Override
+    @NonNull
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 

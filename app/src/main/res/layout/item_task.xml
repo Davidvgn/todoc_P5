@@ -9,7 +9,6 @@
     android:layout_marginEnd="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/task_item_cl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -68,6 +67,7 @@
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:padding="16dp"
             android:src="@drawable/ic_delete"
+            android:contentDescription="@string/dustbin_icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

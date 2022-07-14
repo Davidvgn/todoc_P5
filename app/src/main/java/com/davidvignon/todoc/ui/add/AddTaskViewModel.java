@@ -19,6 +19,7 @@ import com.davidvignon.todoc.utils.SingleLiveEvent;
 import java.util.List;
 import java.util.concurrent.Executor;
 
+@SuppressWarnings("ALL")
 public class AddTaskViewModel extends ViewModel {
 
     private final TaskRepository taskRepository;

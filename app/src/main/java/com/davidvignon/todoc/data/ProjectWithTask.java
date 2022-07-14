@@ -54,6 +54,7 @@ public class ProjectWithTask {
         return Objects.hash(project, task);
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "ProjectWithTask{" +
